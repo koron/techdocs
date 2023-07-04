@@ -132,7 +132,7 @@ INSERT INTO vss_word(rowid, vector) SELECT rowid, vector FROM word;
 6行目の`'food'`を変更すれば別の単語で検索できます。
 ただしベクトルを指定しての検索であるため、wordテーブルに存在する単語でしか検索できないことに留意が必要です。
 
-```
+```sql
 SELECT w.label, v.distance FROM vss_word AS v
   JOIN word AS w ON w.rowid = v.rowid
   WHERE vss_search(
@@ -149,7 +149,7 @@ SELECT w.label, v.distance FROM vss_word AS v
 以下にはその形式で書き直したものを示します。
 こちらのほうが上のモノよりは読みやすいでしょう。
 
-```
+```sql
 SELECT w.label, v.distance FROM vss_word AS v
   JOIN word AS w ON w.rowid = v.rowid
   WHERE vss_search(
@@ -182,6 +182,6 @@ CREATE VIRTUAL TABLE vss_hnsw_word USING vss0 (
 );
 ```
 
-`vss_word`と比べて`vector`カラムに`factory="HNSW,Flat,IDMap"`という指定が増えていることが一目瞭然です。
+前述の`vss_word`と比べて`vector`カラムに`factory="HNSW,Flat,IDMap"`という指定が増えていることが一目瞭然です。
 これがFaissのインデックスを作る際のパラメーターを指定しています。
 この例で指定しているのは`HNSW,Flat,IDMap`です。
