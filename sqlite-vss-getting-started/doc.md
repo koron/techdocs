@@ -113,7 +113,7 @@ TSVを`.import`した直後はベクトルがJSONとして保存されるので�
 裏を返すとsqlite-vssでは、仮想テーブルの作り方で検索アルゴリズムを選択する、ということでもあります。
 
 ```sql
-CREATE VIRTUAL TABLE vss_word using vss0 (
+CREATE VIRTUAL TABLE vss_word USING vss0 (
     vector(300)
 );
 ```
@@ -121,8 +121,6 @@ CREATE VIRTUAL TABLE vss_word using vss0 (
 この仮想テーブルにデータを登録するために、以下のSQL文を実行しwordテーブルからベクトルを転記します。
 rowidも合わせて転記することで、インデックスとして機能するようにしています。
 また利用するアルゴリズム次第では、転記の前にトレーニング・事前最適化をする必要がありますが、それは後に説明します。
-`vss_word`テーブルの`vector`カラムは、Faissのインデックスに相当しており、1つの仮想テーブルに複数追加することも可能です。
-Faissのインデックスは複数の検索アルゴリズムに対する抽象インターフェースを提供しています。
 
 ```sql
 INSERT INTO vss_word(rowid, vector) SELECT rowid, vector FROM word;
@@ -162,10 +160,28 @@ SELECT w.label, v.distance FROM vss_word AS v
 ```
 
 検索方法を概観すると次のようになっています。
-この検索方法の大枠はベクトル検索アルゴリズムを変更しても変わりません。
-SQLiteとsqlite-vssにより検索方法が抽象化されていると言えるでしょう。
 
 1. 検索する単語`food`のベクトルを決定する
 2. `vss_search_params()`関数を用いて1のベクトルと必要な件数から、検索パラメータを作成する
-3. WHERE句に`vss_search()`関数を指定して、仮想テーブルを検索する。同関数には、仮想テーブル内のカラム≒Faissのインデックスと、2の検索パラメーターを指定する
+3. WHERE句に`vss_search()`関数を指定して、仮想テーブルを検索する。同関数には、仮想テーブル内のカラムと、2の検索パラメーターを指定する
 4. 仮想テーブルのrowidと本体テーブルのrowidを突き合わせて単語文字列を取得し、距離とともに表示する
+
+この検索方法の大枠はベクトル検索アルゴリズムを変更しても変わりません。
+SQLiteとsqlite-vssにより検索方法が抽象化されていると言えるでしょう。
+仮想テーブル`vss_word`の`vector`カラムは、Faissのインデックスに相当しています。
+sqlite-vssでは1つの仮想テーブルに複数のカラム、すなわちFaissのインデックスを追加することも可能です。
+Faissのインデックスが複数の検索アルゴリズムに対する抽象インターフェースを提供しているため、sqlite-vssによる検索が抽象化される、と表現するほうがより正確でしょう。
+
+ここまで来ると「どのように仮想テーブルにカラムを作るか」が重要となります。
+それは「どの検索アルゴリズムを選択するか」ということであり、言い換えれば「どのようなパラメーターでFaissのインデックスを作るか」ということです。
+具体例を以下に示します。
+
+```sql
+CREATE VIRTUAL TABLE vss_hnsw_word USING vss0 (
+    vector(300) factory="HNSW,Flat,IDMap2"
+);
+```
+
+`vss_word`と比べて`vector`カラムに`factory="HNSW,Flat,IDMap"`という指定が増えていることが一目瞭然です。
+これがFaissのインデックスを作る際のパラメーターを指定しています。
+この例で指定しているのは`HNSW,Flat,IDMap`です。
