@@ -183,5 +183,14 @@ CREATE VIRTUAL TABLE vss_hnsw_word USING vss0 (
 ```
 
 前述の`vss_word`と比べて`vector`カラムに`factory="HNSW,Flat,IDMap"`という指定が増えていることが一目瞭然です。
-これがFaissのインデックスを作る際のパラメーターを指定しています。
+この`factory`に指定した文字列でFaissのインデックスを作る際のパラメーターを指定しています。
 この例で指定しているのは`HNSW,Flat,IDMap`です。
+この文字列はsqlite-vssからFaissの`faiss::index_factory()`に直接渡され、インデックスを作成するのに使われます。
+Faissのindex factoryについてのドキュメントは下記のリンクを参照してください。
+
+<https://github.com/facebookresearch/faiss/wiki/The-index-factory>
+
+またより詳細な仕様を知るには`Faiss::index_factory()`のソースを見る必要があるかもしれません。
+その場合は以下のリンクを参照してください。
+
+<https://github.com/facebookresearch/faiss/blob/868e17f29493075742170885f1f57c7b9e61d9ea/faiss/index_factory.cpp#L883>
