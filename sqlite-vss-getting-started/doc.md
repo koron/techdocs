@@ -305,7 +305,7 @@ SELECT w.label, v.distance FROM vss_hnsw_pq_word AS v
 
 本文で利用したデータは下記のリンクから入手できます。
 
-* <https://raw.githubusercontent.com/koron/techdocs/main/sqlite-vss-getting-started/2e3.tsv> 2000個のベクトルが入ったデータ(約4.4MB)
+* [2e3.tsv](https://raw.githubusercontent.com/koron/techdocs/main/sqlite-vss-getting-started/2e3.tsv) 2000個のベクトルが入ったデータ(約4.4MB)
 
 ### オリジナルデータの入手・加工方法
 
