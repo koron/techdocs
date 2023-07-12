@@ -359,3 +359,8 @@ $ paste 1.tmp 2.tmp > 2e3.tsv
 # 作業用の一時ファイルを消す
 $ rm -f 1.tmp 2.tmp
 ```
+
+## 本記事のオリジナルデータ
+
+本記事のオリジナルデータは以下のURLに置いてあります。
+<https://github.com/koron/techdocs/blob/main/sqlite-vss-getting-started/doc.md>
