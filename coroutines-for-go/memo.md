@@ -210,5 +210,17 @@ coro.Newがresumeだけじゃなくcancel関数も返すようにする。
 各オーバーヘッドは数十ナノ秒となり、もとより10倍速くなった。
 このくらいであれば十分だろう。
 
+---
+
+# <a name="conclusion">まとめ</a>
+
+おおよそ以下のような構成だった。
+
+1. coroutineの定義を確定する
+2. 既存の実装(Lua & Python)を検証する
+3. Goでcoroutineを(incremental)に実装する
+4. 3を通じて必要となったAPIの要件を確定する
+5. パフォーマンスを計測し、改善案を提示する
+
 [coro]:https://research.swtch.com/coro
 [clu]:https://ja.wikipedia.org/wiki/CLU
