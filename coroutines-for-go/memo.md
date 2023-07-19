@@ -220,5 +220,11 @@ coro.Newがresumeだけじゃなくcancel関数も返すようにする。
 4. 3を通じて必要となったAPIの要件を確定する
 5. パフォーマンスを計測し、改善案を提示する
 
+# メモの原本
+
+このメモの原本は以下のURLです。
+
+https://github.com/koron/techdocs/blob/main/coroutines-for-go/memo.md
+
 [coro]:https://research.swtch.com/coro
 [clu]:https://ja.wikipedia.org/wiki/CLU
