@@ -228,3 +228,33 @@ argorithms以下は、単なるAdapterとして機能する。
     グラフに出してる形への整形は別の場所。
 
 整形はこのあたりか [`get_recall_values`](https://github.com/erikbern/ann-benchmarks/blob/1bf6cfd15ab410c2059ab277c1ee1c1fe85f51fe/ann_benchmarks/plotting/metrics.py#L14)
+
+## グラフ内の点同士の関係を調べる
+
+上記は `runner.run()` のプロシージャである。
+この関数はアルゴリズムとデータセットを指定してベンチマークを実行するもの。
+インデックスを1度作成後、パラメータに応じて複数回テスト(クエリ)を実行する。
+パラメータはconfig.yml内の`query_args`と`query_arg_groups`の組み合わせになる。
+が`query_arg_groups`は既に使われてないようだ。
+
+config.ymlの`args` はdefinitions.pyの`prepare_args()`で取り出している。
+最終的に`Definition.arguments`に格納している。
+definitions.pyの`instantiate_algorithm`でAlgorithmのコンストラクターに渡している。
+
+アルゴリズムとconfig.ymlと各種パラメータの関係はわかった。
+アルゴリズムとデータセットを選択すると、ベンチマーク結果全体が得られる。
+結果全体には、クエリ引数セットごとに結果すなわち精度と時間が格納されている。
+順番つまりプロットしたときの、或るシリーズの各点の前後関係は、クエリ引数セット=`query_args` の要素順序に依存している、と推定される。
+
+最後にそれを確定してしまいたい。
+
+結果は `[ (時間, [(候補単語, 距離)]) ]` の形。
+各クエリにかかった時間、出力された候補、そのペアがクエリの数だけ。
+
+他のメタデータとあわせてHDF5に追記する。
+この時 `query_arguments` の順番で、その値とともに格納される。
+
+`compute_metrics()` で全ファイルから再構成。
+`res` すなわち `args`, `query_arguments` の組み合わせの順番で再構成される。
+
+グラフのプロットの各点は config.yml の `args`, `query_arguments` の組み合わせの順である。
