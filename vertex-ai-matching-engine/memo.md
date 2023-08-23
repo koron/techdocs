@@ -156,3 +156,8 @@ Brute force と tree-AHで比較して計算してる。
 とにかく楽に使う(使わせる)ことが考えられたmanagedサービス。
 アルゴリズムはBrute forceとtree-AHだけの選択で、選択肢が少ない分だけ迷わない。
 総容量に応じて複数shardを使う前提なので、そこそこのお金で解決するモデル。
+
+## 補足
+
+AzureにもCogniteive Searchというのが出ていて、最近パブリックβになったばかり。
+https://qiita.com/nohanaga/items/f710cac82072b63bc73f
