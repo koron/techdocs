@@ -13,6 +13,9 @@ word2vecの一部の構造はitem2vecでは不要になる。
 論文 Item2Vec: Neural Item Embedding for Collaborative Filtering
 https://qiita.com/FukuharaYohei/items/255d8df71bbf6b000ea4
 
+論文メモ: Item2Vec: Neural Item Embedding for Collaborative Filtering
+https://ohke.hateblo.jp/entry/2017/12/02/230000
+
 item2vecだと、アイテム件数が多くなった時に指標が良くない。
 https://engineering.mercari.com/blog/entry/20230612-cf-similar-item/
 
