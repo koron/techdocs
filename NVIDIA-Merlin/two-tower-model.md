@@ -61,6 +61,10 @@ tensorflow.keras.Model
 
 ## 先行利用者は?
 
+* MercariがGoogleのVertex AI Matchingを使って
+* 個人がTensorflow Recommendersを使って
+* TODO: 英語圏では?
+
 ## その他
 
 ### NVTabularが「GPUモードではない」というのはなぜ? 回避法は?
