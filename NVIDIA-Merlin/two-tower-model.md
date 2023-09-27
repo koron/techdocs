@@ -63,11 +63,105 @@ tensorflow.keras.Model
 
 * MercariがGoogleのVertex AI Matchingを使って
 * 個人がTensorflow Recommendersを使って
-* TODO: 英語圏では?
+* 英語圏では?
+    * 当然 YouTube 他のGoogleサービスでは使ってる
+    * Uber: <https://www.uber.com/en-JP/blog/innovative-recommendation-applications-using-two-tower-embeddings/> プラットホームは不明
+    * <https://www.linkedin.com/pulse/personalized-recommendations-iv-two-tower-models-gaurav-chakravorty/> Facebook の Video Recommendation に関わってるらしい人の解説 (2021/01/24)
+    * Snapchat Spotlight: <https://eng.snap.com/embedding-based-retrieval> 2023/06/06 一部にGoogleを使ってるらしいが、コア部分であるとは断定できない
+        * **EBR (Embedding-based Retrieval)** というキーワード
+    * Tencentの論文 https://arxiv.org/abs/2302.08714 2023/02/17
+    * Facebookの論文 https://research.facebook.com/publications/embedding-based-retrieval-in-facebook-search/ 2020/08/22
+    * Airbnbの論文 https://arxiv.org/pdf/2004.02621.pdf
+    * Instagramでどう使ってるのか https://engineering.fb.com/2023/08/09/ml-applications/scaling-instagram-explore-recommendations-system/ 2023/08/09
+    * Alibabaの論文 [ATNN: Adversarial Two-Tower Neural Network for New Item’s Popularity Prediction in E-commerce](https://personal.ntu.edu.sg/c.long/paper/21-ICDE-arrivalPrediction.pdf) タイトルからは Triplet Lossっぽい雰囲気がある (時期不明 2021 ICDE? 04?)
+* 気になった資料
+    * EBRとは? (Embedding-based Retrieval) https://ymym3412.hatenablog.com/entry/2020/12/10/035027
+    * EBRの論文読み祭り https://speakerdeck.com/stakaya/tui-jian-ge-she-he-tong-lun-wen-du-miji-number-1-kdd-20-embedding-based-retrieval-in-facebook-search
+    * Google [re-training Tasks for Embedding-based Large-scale Retrieval](https://research.google/pubs/pub49252/) 2020
+    * Google [Mixed Negative Sampling for Learning Two-tower Neural Networks in Recommendations](https://research.google/pubs/pub50257/) 2020
+    * <https://github.com/liyinxiao/UnifiedEmbeddingModel> Facebookの論文を実装してみた系 two-tower x2の入れ子構造になってる。 torch & numpy
+    * [ZOZOでの検索/推薦技術に関する論文読み会](https://techblog.zozo.com/entry/search-recommend-articles-study-session)
+    * [Deep Metric Learning の定番⁈ Triplet Lossを徹底解説](https://qiita.com/tancoro/items/35d0925de74f21bfff14)
+        * Triplet Loss 2014/04 ポジティブとネガティブ、組で学習する点がポイントみたい
+    * [Beyond Two-Tower Matching: Learning Sparse Retrievable Cross-Interactions for Recommendation](https://dl.acm.org/doi/abs/10.1145/3539618.3591643)
 
 ## その他
 
 ### NVTabularが「GPUモードではない」というのはなぜ? 回避法は?
+
+(dockerを使うことで解決済み)
+
+cudfパッケージがロードできないことによる。
+
+cudfはconda経由でインストールしろと怒られる。
+
+pypiには古い版しかなさそう。
+
+Windowsではインストールが困難かもしれない。
+
+RAPIDSの一部。
+
+> RAPIDS はデータサイエンスのワークフロー全体を GPU で高速化するためのライブラ
+> リ群です。GPU の性能を引き出す NVIDIA CUDA ベースで構築され、使いやすい
+> Python インタフェースを提供します。
+
+<https://qiita.com/Clip_1212/items/beaad136216c18a1d2a4>
+
+Windowsは未サポート情報アリ。
+
+これ以上頑張る意義がないかも。
+
+WSL2でやる選択肢と、dockerでやる選択肢がある。
+他パスでもDockerに行き当たってるので、いまはDockerが優先だろう。
+とにかく誰でも動かせるベースラインを作ることが目的。
+(ただしダウンロード量はアホみたいに多いがw)
+
+### on Docker
+
+```
+docker run -it --rm --gpus all \
+    -p 8000:8000 -p 8001:8001 -p 8002:8002 -p 8888:8888 \
+    -v .:/workspace/data/ --ipc=host \
+    nvcr.io/nvidia/merlin/merlin-tensorflow:nightly \
+    /bin/bash
+```
+
+これでDockerを起動して、シェル内で以下のコマンドでjupyter-labを動かせば、
+以前動かなかったサンプルも動作を確認できた。
+
+```
+jupyter lab --allow-root --ip='0.0.0.0'
+```
+
+イメージの詳細(カタログ)
+<https://catalog.ngc.nvidia.com/orgs/nvidia/teams/merlin/containers/merlin-tensorflow>
+
+全イメージで14.6GBになるので、ディスク容量には注意。
+
+未ログインでもpullはできたらしい。
+
+## Two-Tower modelについての理解
+
+ユーザーがアイテムを購入したというデータがある。
+
+ユーザーとアイテムをそれぞれのDNNタワーにかけ適当なembeddings(ベクトル)を得る。
+ユーザーAがアイテムBを購入した場合、その2つのベクトルが近くなるように学習する。
+ここに損失関数を導入する。
+Googleのは鼻薬が効いてて、多く登場するアイテムが過度に有利・不利にならないようになってる。
+
+全購入データの2つのベクトルの距離が小さくなる方向に圧力をかけることが学習になる。
+裏返すと、買わなかった組み合わせでは距離が大きくなる方向に圧力をかける。
+
+追加資料: <https://blog.reachsumit.com/posts/2023/03/two-tower-model/>
+
+課題: タワー間の接続が無いからパフォーマンスがあがらない
+
+以下のような発展形が提案されてる
+
+* Dual Augmented Two-Tower Model (DAT)
+* Interaction Enhanced Two Tower Model (IntTower)
+* Alternative: COLD, FSCD
+
 
 ## 参考資料
 
