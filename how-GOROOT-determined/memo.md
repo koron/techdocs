@@ -176,3 +176,9 @@ func execGoToolchain(gotoolchain, dir, exe string) {
 そっちじゃなくて internal/work/exec.go の runOut() の envのほうかも?
 
 ちょっと追うのが面倒になったので、いったん終了。
+
+go/main.go で `os.Setenv()` を読んで設定してた。
+envcmd.MkEnv()で `go env` の出力相当をとってきて、
+実際の値と異なるものだけ `os.Setenv()` している。
+go起動時は環境変数GOROOTは設定されていないが
+cfg.GOROOTには設定されていて値が異なるため `os.Setenv()` することになる。
