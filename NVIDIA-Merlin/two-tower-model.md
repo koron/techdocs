@@ -164,7 +164,7 @@ Googleのは鼻薬が効いてて、多く登場するアイテムが過度に�
 
 ## ゼロベースからの再現
 
-movieslensのデータを使ってTwoTowerを構築し、簡単な検索を実施するところまで。
+movieslensのデータを使ってTwoTowerを構築し、embeddingsを得るところまで。
 
 `merlin.datasets.entertainment.get_movielens` を使うと楽。
 ただ一般的なデータは読み込めないので、
