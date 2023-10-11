@@ -162,6 +162,80 @@ Googleのは鼻薬が効いてて、多く登場するアイテムが過度に�
 * Interaction Enhanced Two Tower Model (IntTower)
 * Alternative: COLD, FSCD
 
+## ゼロベースからの再現
+
+movieslensのデータを使ってTwoTowerを構築し、簡単な検索を実施するところまで。
+
+`merlin.datasets.entertainment.get_movielens` を使うと楽。
+ただ一般的なデータは読み込めないので、
+どうやって読み込むかについて一般かが必要。
+最悪 `get_movielens` の実装を読めばよい。
+
+movielens 100kと1mではスキーマのカラム数が異なる。
+1mのほうが多く、主に `TE_` プレフィクスのカラムが増えてる。
+っていうかダウンロードできるzipの構成が全然違う。
+
+`get_movielens` は結構複雑なことをやってる可能性があり。
+zipのダウンロード、展開、必要なデータの読み込み、
+必要なタグの付与、
+parquet化して保存、Data Frameでの読み込み。
+
+入力ファイルは `movies.dat`, `ratings.dat`, `users.dat` の3つで
+出力ファイルは `movies_converted.parquet`, `train.parquet`, `valid.parquet`, `users_converted.parquet` の4つ。
+映画作品のデータ、ユーザーのデータ、ユーザーが映画を視聴して付けた点数データという感じ。
+点数データに映画作品とユーザーのデータを非正規化して合成し、8:2でtrainとvalidに分けるいう流れ。
+
+当然 train と valid のスキーマは一致する。
+そのスキーマのうち `Tags.USER` でマークされたものを新たなユーザスキーマとして、
+入力フィルタにし two-tower のうちquery 側のエンコーダーにする。
+エンコーダーはMLP(多層パーセプトロン)である。
+
+同様のことを `Tags.ITEM` でマークされたスキーマに対して行い、
+candidate 側のエンコーダーにする。
+
+queryとcandidateのエンコーダーを指定して TwoTowerModelV2 を作成し、
+コンパイル (`compile`) し、train を用いて `fit` する。
+この時のパラメーターについては、別途調べる必要がある。
+
+train から `Tags.ITEM` および `Tags.ITEM_ID` で特徴量(?)を抽出すれば、
+それを元にTop-Kを求める特殊なエンコーダー(`topk_model`)が作成できる。
+validの任意のitem(映画作品)を指定してそれに近い作品を提示できる、ということ。
+ここで言ってる特徴量とは `features` で `unique_rows_by_features(source?, columns?, key?)` により求められるはず。
+
+`unique_rows_by_features` についてはわかってないことが多いので
+ソースを見た方が良いかもしれない。
+非正規化データから正規化データを取り出していそうな雰囲気。
+
+ネガティブサンプリングに基づく、モデルの評価といえるらしい。
+ネガティブサンプリングってなんじゃらほい?
+
+<https://benrishi-ai.com/negative-sampling01/>
+<https://kento1109.hatenablog.com/entry/2019/11/29/111028>
+<http://tkengo.github.io/blog/2016/05/09/understand-how-to-learn-word2vec/>
+
+もともとはサンプルに存在しない組み合わせを、学習へ利用することで高速化する手法らしい。
+
+評価方法がよくわからない。
+
+modelから `query_encoder` を取り出してシリアライズできる。
+となるとシリアライズしたデータか model を学習をせずに再構築するのもアリのはずだが。
+
+1. データのロード (非正規化)
+2. カラムのタグ付け `Tags.USER_ID`, `Tags.USER`, `Tags.ITEM_ID`, `Tags.ITEM`
+   スキーマの分離が目的であって、必ずしもこのタグである必要はないはず。
+3. queryとcandidateのエンコーダを作成(2によりスキーマを分類し、フィルタとする)
+4. TwoTowerモデルの作成と学習 (1全体の読み込み)
+5. 上記モデルの評価 (Negative SamplingによるTop-Kの評価)
+6. embeddingsの取得
+
+
+### TODO: 要調査アイテム
+
+* `get_movielens` の中身
+* `TwoTowerModelV2` の `compile` と `fit` のパラメーター
+* `unique_rows_by_features` の中身
+* シリアライズデータからモデルを構築する方法?
+
 
 ## 参考資料
 
