@@ -94,3 +94,16 @@ AUC, accuracy, logloss ってなんだ?
 * LogLoss: (Binary Logarithmic Loss) 二値化ベースの正答率は微妙なズレを表現できない。確率値まんまで正解と比較して差を見る。小さいほど良い。
 
 <https://atmarkit.itmedia.co.jp/ait/articles/2103/04/news023.html>
+
+---
+
+importに意外と時間がかかる。
+
+rating が3のモノは除外している。
+rating が3以上を1へ、未満を0に変換している。
+残り約739万件。
+学習用に80%の591万件、テスト用に20%の147万件に振り分ける。
+
+`get_user_feature`
+
+`get_item_feature`
