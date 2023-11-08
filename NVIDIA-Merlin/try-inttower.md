@@ -22,7 +22,13 @@ torchvision
 
 もっと良い消し方があるかもしれない。
 
+実行前には事前に以下の閑居変数の設定が必要。
+
+```console
+$ export PROTOCOL_BUFFERS_PYTHON_IMPLEMENTATION=python
 ```
+
+```console
 $ python train_movielens_IntTower.py
 ```
 
@@ -107,3 +113,26 @@ rating が3以上を1へ、未満を0に変換している。
 `get_user_feature`
 
 `get_item_feature`
+
+---
+
+メモリ使用量が多い件に関して。
+
+<https://github.com/keras-team/keras/issues/15887>
+
+TF 2.x (2.8を含む)には
+numpyでカスタムトレーニングループを使ってると
+メモリリークする不具合が確認されている。
+IntTowerがそれに該当する証拠はまだわかっていないが、状況的にヒットしていてもおかしくない。
+
+<https://github.com/tensorflow/tensorflow/issues/40942>
+
+Issueそのものは放置されてしまったようだ。
+TFではあるがkeras固有の問題らしく
+kerasが3.0系に移ってるので2.x系のはもう知らんということらしい。
+
+---
+
+結局のところIntTowerをちゃんと使うには時期尚早と言わざるを得ないだろう。
+時間をかければ自前で最新環境で追試・実用できるところまで行くこともできるかもしれないが
+現実的とは言えなさそう。
