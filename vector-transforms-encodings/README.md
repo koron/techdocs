@@ -37,6 +37,14 @@ SQ, RQ, ZnLattice, LSH あたりが不明ポイント。
 時点でRQ, LSQ などのバリエーションは、ほんとにバリエーションなのか?
 Flat, PQは理解できてる(しやすい)。
 
+Transformsには2つの性質がある(1つしかない場合もある)。
+1つはEncodingの精度を上げる性質。
+もう1つは次元を圧縮する性質。
+
+Encodingsは次元を圧縮する。
+元データの分布を利用したものと、そうでないものという分け方はできそう。
+PQは汎用で、ZnLatticeやLSHは特殊用途。
+
 OPQ: [Optimized Product Quantization for ANN search (2013)](https://ieeexplore.ieee.org/document/6619223)
 
 <https://www.microsoft.com/en-us/research/wp-content/uploads/2013/11/pami13opq.pdf>
@@ -58,4 +66,4 @@ L2norm: L2正則化は過学習の防止が目的。
 損失関数にL2ノルム(二乗和の平方根≒距離)を加えることで正則化する。
 <https://zero2one.jp/ai-word/l2-normalization/>
 <https://zero2one.jp/learningblog/yobinori-collab-regularization/>
-ヨビノリの解説動画がある。
+ヨビノリの解説動画がある。あとでゆっくり見ておこう。
