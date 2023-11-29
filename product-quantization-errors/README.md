@@ -74,3 +74,5 @@ QDは日本語だと [量子化誤差](https://ja.wikipedia.org/wiki/%E9%87%8F%E
 * 量子化歪み(量子化誤差)という枠組みでPQの精度・誤差を論じることはできそう
 * その誤差からより良い事前変換(回転)を求めるのがOPQ
 * PQを一般化した Additive quantization と Composite quantization があり、精度の議論もより一般化されるかも
+
+突き詰めるとPQ特有の誤差というものは無くなり、普通の量子化誤差で論じることができそう
