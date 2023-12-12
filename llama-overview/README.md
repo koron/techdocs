@@ -515,3 +515,12 @@ I'm an assistant designed to help make your day easier. Whether it's setting rem
 * llama.cpp をポータブルで実行可能にする llamafile
 * llamafile が受け付けるモデルフォーマットは GGUF
 * 各種モデルはHugging FaceでThe Blokeがいろいろ配ってる
+
+## 保留した疑問
+
+[配布されてるモデル](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/tree/main)の命名規則がよくわからない。
+`Q{n}` は量子化サイズだと推定される。
+一方で `K`, `K_L`, `K_M` という suffix が不明。
+量子化方法(Quant method)という推測はあるが、
+それぞれのメソッドがどんなものかがわかんない。
+GGUF側を見れば、手がかりがあるかも。
