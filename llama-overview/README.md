@@ -518,9 +518,19 @@ I'm an assistant designed to help make your day easier. Whether it's setting rem
 
 ## 保留した疑問
 
-[配布されてるモデル](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/tree/main)の命名規則がよくわからない。
+Q. [配布されてるモデル](https://huggingface.co/TheBloke/Mistral-7B-Instruct-v0.2-GGUF/tree/main)の命名規則がよくわからない。
 `Q{n}` は量子化サイズだと推定される。
 一方で `K`, `K_L`, `K_M` という suffix が不明。
 量子化方法(Quant method)という推測はあるが、
 それぞれのメソッドがどんなものかがわかんない。
 GGUF側を見れば、手がかりがあるかも。
+
+A. モデルの量子化後サイズだった。
+`M` にはQ3だけでなくQ4~6も含まれるが、`S`にはQ3だけしかなかった。
+結果としてBit Per Weight (BPW)は `M` が 3.89 なのに対し、
+`S` は 3.50 になっていた。
+
+Q. WindowsでGPU (NVIDIA CUDA)を使う方法がわかってない。
+llamafileのドキュメントにはCUDA12.xとVC2022が必要と書いてあった。
+またcmakeを利用するとも。
+ハマったら時間がかかりそうだから、試すのはしばらく保留。
