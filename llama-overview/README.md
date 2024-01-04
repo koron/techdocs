@@ -530,6 +530,8 @@ A. モデルの量子化後サイズだった。
 結果としてBit Per Weight (BPW)は `M` が 3.89 なのに対し、
 `S` は 3.50 になっていた。
 
+`K` は K-quant の意味らしいが、 K-quant が何者なのかはまだわかっていない。
+
 Q. WindowsでGPU (NVIDIA CUDA)を使う方法がわかってない。
 llamafileのドキュメントにはCUDA12.xとVC2022が必要と書いてあった。
 またcmakeを利用するとも。
