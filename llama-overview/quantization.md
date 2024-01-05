@@ -13,6 +13,7 @@ llama.cpp のモデルファイル `.gguf` には
 これらのパラメータは全部の組み合わせが可能なわけではない。
 有効な組み合わせに対してquantizerとdequantizerが関数として定義されている。
 結果、利用可能な量子化手法(パラメーター)は限られている。
+([参考](https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.h#L170-L182))
 
 ## `q4_0` 量子化
 
