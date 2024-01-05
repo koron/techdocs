@@ -21,6 +21,11 @@ llama.cpp のモデルファイル `.gguf` には
 3. `[-amax, amax]` の区間を16個(=2^4)にサブ区間へ分ける
 4. ブロック全部をサブ区間へ変換=量子化する
 
+参考リンク:
+
+* <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.h#L10-L15>
+* <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.c#L444>
+
 ## `q4_1` 量子化
 
 1. 32個のfloatを1ブロックとし量子化する
@@ -28,6 +33,16 @@ llama.cpp のモデルファイル `.gguf` には
 3. `[min, max]` の区間を16個(=2^4)にサブ区間へ分ける
 4. ブロック全部をサブ区間へ変換=量子化する
 
+参考リンク:
+
+* <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.h#L17-L23>
+* <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.c#L485>
+
 ## `q4_K` 量子化
 
-(調べてる最中)
+(WIP: 調べてる最中)
+
+参考リンク:
+
+* <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.h#L104-L123>
+* <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.c#L1826>
