@@ -22,13 +22,15 @@ llama.cpp のモデルファイル `.gguf` には
 3. `[-amax, amax]` の区間を16個(=2^4)の均等なサブ区間へ分ける
 4. ブロック全部をサブ区間へ変換=量子化する
 
+### 感想
+
 最悪のケースで量子化領域の半分しか使えない。
 全部のfloatが正だった場合に負のサブ区間は決して使われないことになる。
 っていうか、そんなことわかり切ってるのになんでこれを用意したのか、
 いまだに使われてるのかがわからない。
 速いから?
 
-参考リンク:
+### 参考リンク:
 
 * <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.h#L10-L15>
 * <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.c#L444>
@@ -40,11 +42,13 @@ llama.cpp のモデルファイル `.gguf` には
 3. `[min, max]` の区間を16個(=2^4)の均等なサブ区間へ分ける
 4. ブロック全部をサブ区間へ変換=量子化する
 
+### 感想
+
 シンプルかつ `q4_0` に比べて表現力に無駄がない。
 値分布が偏ってるときに無駄になるがそれはまた別に考えるんだろう。
 主に `K` がそれじゃないかと推測できる。
 
-参考リンク:
+### 参考リンク:
 
 * <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.h#L17-L23>
 * <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.c#L485>
@@ -53,7 +57,14 @@ llama.cpp のモデルファイル `.gguf` には
 
 (WIP: 調べてる最中)
 
-参考リンク:
+### メモ
+
+* `QK_K` - ブロックサイズ。64 or 256 でコンパイル時に決まる。
+* `nb` - ブロック数
+* サブブロック - 1ブロックを32個に分割する。なので2 or 4
+* $`{avX} = \frac{\sqrt{\displaystyle\sum_{i=0}^{31} x_{b+i} ^ 2}}{32}`$
+
+### 参考リンク:
 
 * <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.h#L104-L123>
 * <https://github.com/ggerganov/llama.cpp/blob/b3a7c20b5c035250257d2b62851c379b159c899a/ggml-quants.c#L1826>
