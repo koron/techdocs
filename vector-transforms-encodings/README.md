@@ -133,3 +133,4 @@ PCAやCCAがより有効になるような、事前の回転を求めるのがIT
 ## 今後
 
 PQの誤差の検証。
+[product-quantizer-errors](../product-quantizer-errors) へ継続

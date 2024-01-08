@@ -76,3 +76,7 @@ QDは日本語だと [量子化誤差](https://ja.wikipedia.org/wiki/%E9%87%8F%E
 * PQを一般化した Additive quantization と Composite quantization があり、精度の議論もより一般化されるかも
 
 突き詰めるとPQ特有の誤差というものは無くなり、普通の量子化誤差で論じることができそう
+
+## その後
+
+https://github.com/koron/jsts-vector-eval で検証実験中
