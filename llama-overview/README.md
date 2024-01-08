@@ -531,11 +531,13 @@ A. モデルの量子化後サイズだった。
 `S` は 3.50 になっていた。
 
 ~`K` は K-quant の意味らしいが、 K-quant が何者なのかはまだわかっていない。~
-[quauntization.md](./quauntization.md) で調査中。
+[quantization.md](./quantization.md) で調査中で、そこそこわかってきた。
 
 Q. WindowsでGPU (NVIDIA CUDA)を使う方法がわかってない。
 llamafileのドキュメントにはCUDA12.xとVC2022が必要と書いてあった。
 またcmakeを利用するとも。
 ハマったら時間がかかりそうだから、試すのはしばらく保留。
 
+A?. [llama.cppのリリース](https://github.com/ggerganov/llama.cpp/releases) にWindows用のCUDA対応のコンパイル済みバイナリがあり、そちらで使える。
+確かに圧倒的に速い。
 
