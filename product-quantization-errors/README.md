@@ -79,4 +79,4 @@ QDは日本語だと [量子化誤差](https://ja.wikipedia.org/wiki/%E9%87%8F%E
 
 ## その後
 
-https://github.com/koron/jsts-vector-eval で検証実験中
+https://github.com/koron/jsts-vector-eval で検証実験した
