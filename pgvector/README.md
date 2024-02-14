@@ -1,5 +1,7 @@
 # pgvector の実験
 
+[pgvector/pgvector](https://github.com/pgvector/pgvector/) 触ってみた
+
 ## とりあえずの起動方法
 
 ```console
@@ -296,7 +298,7 @@ postgres=# SELECT pg_size_pretty(pg_relation_size('items_embedding_idx_ip'));
 (1 row)
 ```
 
-### ベクトル数を大きくしてみる
+### ベクトル数を多くしてみる
 
 2倍の20000ベクトルのデータを作って同じことをしてみる。
 
