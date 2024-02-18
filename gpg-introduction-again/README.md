@@ -109,7 +109,55 @@ GitHub に登録する際の形式は `--armor --export {鍵ID}` で標準出力
 $ gpg --armor --export 13C36E2A4B75337B | clip
 ```
 
+適当に主鍵を作ってみて、消した。
+秘密鍵を消してから公開鍵を消す。
+秘密鍵を消す際にはパスフレーズが聞かれる。
+対応する秘密鍵のない公開鍵は、他人の鍵同様の扱い。
 
+```
+$ gpg --delete-secret-key 85A760630D29548C
+$ gpg --delete-key 85A760630D29548C
+```
+
+副鍵を作る。
+`gpg --edit-key 13C36E2A4B75337B` で鍵の編集モードに入る。
+`addkey` で副鍵の編集モードに入り、ポチポチやってたらなんかできた。
+
+```
+$ gpg --list-secret-keys --keyid-format=long 13C36E2A4B75337B
+sec   rsa4096/13C36E2A4B75337B 2020-05-23 [SC]
+      1EAE763E7F10B43EE2122B8813C36E2A4B75337B
+uid                 [  究極  ] MURAOKA Taro (KoRoN) <koron.kaoriya@gmail.com>
+ssb   rsa4096/E532735532FDE898 2020-05-23 [E]
+ssb   rsa4096/B42B276F171874AF 2020-05-28 [S]
+ssb   rsa4096/E743618D98DD9BEB 2020-05-28 [S]
+ssb   ed25519/F1A0E61C700E0663 2024-02-18 [S]
+```
+
+とりあえず GitHub に長しこんでみる。
+そのままでは追加できないので、既存分をいったん削除する。
+
+```
+$ gpg --armor --export 13C36E2A4B75337B | clip
+```
+
+更新後はこうなった。
+Subkeysに `F1A0E61C700E0663` が増えて、Added onが今日の日付になった。
+過去の Verified コミットマークも維持されてる。
+
+```
+Email address:  koron.kaoriya@gmail.com
+Key ID: 13C36E2A4B75337B
+Subkeys: E532735532FDE898 , B42B276F171874AF , E743618D98DD9BEB , F1A0E61C700E0663
+Added on Feb 18, 2024
+```
+
+副鍵の秘密鍵をファイルにエクスポート。
+出力したファイル F1A0E61C700E0663.asc はノートPCへコピー
+
+```
+gpg --armor --export-secret-key F1A0E61C700E0663 > F1A0E61C700E0663.asc
+```
 
 ## (TODO)
 
