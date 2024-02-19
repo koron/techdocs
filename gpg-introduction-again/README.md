@@ -295,7 +295,7 @@ ssb#  ed25519/F1A0E61C700E0663 2024-02-18 [S]
     主鍵の編集モードに入る。
 
     ```console
-    $ ggp --edit-key {主鍵のID}
+    $ gpg --edit-key {主鍵のID}
     ```
 
     副鍵の追加は `addkey` で質問に答える形で作れる。
