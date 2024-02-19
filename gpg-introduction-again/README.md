@@ -333,7 +333,8 @@ ssb#  ed25519/F1A0E61C700E0663 2024-02-18 [S]
 6. 副鍵を署名に利用しないようにする
 
     主鍵に複数の副鍵がある場合に特定の副鍵を使わないようにする方法。
-    複数の署名用の鍵がある場合、特に指定しない場合にGPGはリスト中の利用可能な最後の鍵を使うようだ。
+    複数の署名用の鍵がある場合、GPGに主鍵のIDを指定して署名させると、リスト中の利用可能な最後の鍵が使われるようだ。
+    そこで任意の副鍵の秘密鍵ファイルにアクセスできないようにすることで利用不可とする。
 
     まず `gpg --list-secret-keys --with-keygrip` で利用不可にしたい副鍵の Keygrip を特定する。
 
@@ -351,9 +352,9 @@ ssb#  ed25519/F1A0E61C700E0663 2024-02-18 [S]
     $ mv ~/.gnupg/private-keys-v1.d/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.key{~,}
     ```
 
-以上。より基本的なことは
-[About commit signature verification](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification)
-が詳しいので、そちらも参照すること。
+以上。
+
+より基本的なことは [About commit signature verification](https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification) が詳しいので、そちらも参照すること。
 より発展的なことは、参考リンクを参照すること。
 
 ## 参考リンク
