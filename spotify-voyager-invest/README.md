@@ -33,3 +33,11 @@ Float32, Float8, E4M3 の3つのモードがあるっぽい。
 日本人が試してみたログ。
 
 追試してみるべきだろう。
+
+## 追試してみた
+
+<https://github.com/koron/java-voyager-eval>
+
+設定なしで HNSW + FP8 となる。オンメモリ
+
+圧縮率は 1/8 と限定的ながら、手軽に使えて recall@10 も高かった。
