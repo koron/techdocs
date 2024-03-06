@@ -16,6 +16,7 @@ Title                                                           |Date       |Sta
 [freebsd14-mtu-dma](./freebsd14-mtu-dma)                        |2024-01-12 |Done
 [systemd-resolved-with-dnsmasq](./systemd-resolved-with-dnsmasq)|2024-02-12 |Done
 [spotify-voyager-invest](./spotify-voyager-invest)              |2023-02-12 |Done
-[pgvector](./pgvector)                                          |2024-02-14 |WIP
+[pgvector](./pgvector)                                          |2024-02-14 |Done
 [gpg-introduction-again](./gpg-introduction-again)              |2024-02-19 |Done
 [ivf-what-is](./ivf-what-is)                                    |2024-03-01 |Done
+[HNSW-libs-comparision](./hnsw-libs-comparision\)               |2024-03-06 |WIP
