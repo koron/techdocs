@@ -45,6 +45,7 @@ $ python run.py --algorithm faiss_hnsw
 
 <details>
 <summary>修正用パッチ</summary>
+
 ```
 diff --git a/ann_benchmarks/algorithms/faiss_hnsw/config.yml b/ann_benchmarks/algorithms/faiss_hnsw/config.yml
 index 84d6baa..9ede091 100644
