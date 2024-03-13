@@ -1,4 +1,4 @@
-# ANN Benchmarkとはなんじゃらほい?
+# ANN Benchmarksとはなんじゃらほい?
 
 https://ann-benchmarks.com/
 

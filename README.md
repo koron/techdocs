@@ -4,7 +4,7 @@ Title                                                           |Date       |Sta
 ----------------------------------------------------------------|-----------|-------
 [sqlite-vss-getting-started](./sqlite-vss-getting-started)      |2023-07-12 |Done
 [coroutines-for-go](./coroutines-for-go)                        |2023-07-18 |Done
-[annbenchmark-overview](./annbenchmark-overview)                |2023-08-16 |Done
+[ANN Benchmarks Overview](./annbenchmarks-overview)             |2023-08-16 |Done
 [vertex-ai-matching-engine](./vertex-ai-matching-engine)        |2023-08-16 |Done
 [item2vec](./item2vec)                                          |2023-09-05 |Done
 [how-GOROOT-determined](./how-GOROOT-determined)                |2023-10-05 |Done
@@ -19,4 +19,5 @@ Title                                                           |Date       |Sta
 [pgvector](./pgvector)                                          |2024-02-14 |Done
 [gpg-introduction-again](./gpg-introduction-again)              |2024-02-19 |Done
 [ivf-what-is](./ivf-what-is)                                    |2024-03-01 |Done
-[HNSW-libs-comparision](./hnsw-libs-comparision\)               |2024-03-06 |WIP
+[HNSW-libs-comparision](./hnsw-libs-comparision)                |2024-03-06 |WIP
+[ANN Benchmarks on Local](./annbenchmarks-on-local)             |2024-03-13 |WIP
