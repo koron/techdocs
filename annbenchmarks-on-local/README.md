@@ -129,7 +129,7 @@ $ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-eucl
 $ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-euclidean --algorithm 'voyager'
 ```
 
-`create_website.py` で作ったデータを [results-20230314](./results-20240314/) に置いた。
+`create_website.py` で作ったデータを [results-20230314](https://koron.github.io/techdocs/annbenchmarks-on-local/results-20240314/) に置いた。
 考察の続きは [../hnsw-libs-comparison](../hnsw-libs-comparison/) にて行う。
 
 ## まとめ
