@@ -36,7 +36,7 @@ $ docker run --rm -it -p 5432:5432 -e LANG=C.UTF-8 -e POSTGRES_PASSWORD=abcd1234
     * hnsw(nmslib): https://ann-benchmarks.com/hnsw(nmslib).html
     * hnswlib: https://ann-benchmarks.com/hnswlib.html
 
-## ann-benchrmask における HNSW の比較
+## ANN Benchrmask における HNSW の比較
 
 ### faiss vs hnswlib
 
@@ -74,9 +74,47 @@ Recall/Index sizeはnsmlibのほうが大きい
 
 nsmlibは速いが、recallに大きく欠ける印象。
 
-### 総評
+### 中間まとめ
 
 Web上で公開されているグラフは、2023/04の計測である可能性が高い。
 必要な比較が公開データではできないので、自前で実行した方が良いかもしれない。
 
 faissのHNSW実装にはメモリ効率と速度とrecallのバランスを取ろうという意図があるかもしれない。
+
+## 最新の ANN Benchmarks による計測と考察
+
+計測の手順は [ANN Benchmarks on local](../annbenchmarks-on-local/) を参照。
+計測の結果は <https://koron.github.io/techdocs/annbenchmarks-on-local/results-20240314/> を参照。
+
+アルゴリズムは hnsw(faiss), hnsw(vespa), hnswlib, pgvector, voyager の5つ。
+データセットは glove-100-angular と fashion-mnist-784-euclidean の2つ。
+
+
+### 考察: glove-100-angular
+
+<https://koron.github.io/techdocs/annbenchmarks-on-local/results-20240314/glove-100-angular_10_angular.html>
+
+* 全体的に Faiss の HNSW が好成績
+* pgvector のQPSは同recallにおいて約10倍遅い
+    * 遅いためそもそもデータ計測数が少ない(Mのバリエーションが小さい→多層グラフになる)
+    * 直接のパフォーマンス比較にはならない
+* pgvectorはビルド速度に優れる
+* 同recallにおけるインデックスサイズは vespa が最も小さい
+    * しかし高recall帯ではその差が縮まる
+    * pgvectorが健闘している
+* hnswlibはrecallが上がり切らない(最大約0.959)
+    * Faissは最大約0.997
+
+### 考察: fashion-mnist-784-euclidean
+
+* MNIST: 手書き数字の画像認識データセット
+* Fashion-MNIST: ファッションアイテムの画像に置き換えたもの
+* recallの下限が高い。元々のデータのクラスタリング傾向が強いことに拠ると推測できる
+* その他の傾向は glove-100-angular と同等
+
+## 総評
+
+* まずFaiss (HNSW) で良さそう (メモリに乗り切る前提)
+* メモリに乗りきらない場合
+    * PQなどでベクトル及びインデックスを圧縮する(recallは犠牲になる)
+    * pgvectorはビルドもクエリも約10倍遅いのでそれが許容できるなら

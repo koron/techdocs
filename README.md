@@ -19,5 +19,5 @@ Title                                                           |Date       |Sta
 [pgvector](./pgvector)                                          |2024-02-14 |Done
 [gpg-introduction-again](./gpg-introduction-again)              |2024-02-19 |Done
 [ivf-what-is](./ivf-what-is)                                    |2024-03-01 |Done
-[HNSW-libs-comparison](./hnsw-libs-comparison)                |2024-03-06 |WIP
-[ANN Benchmarks on Local](./annbenchmarks-on-local)             |2024-03-13 |WIP
+[HNSW-libs-comparison](./hnsw-libs-comparison)                  |2024-03-06 |WIP
+[ANN Benchmarks on Local](./annbenchmarks-on-local)             |2024-03-13 |Done
