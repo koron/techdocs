@@ -8,14 +8,14 @@
 2. Run `pip install -r requirements.txt`
 3. Run `python install.py` to build all the libraries inside Docker containers (this can take a while, like 10-30 minutes).
 
-Step. 3は `--algorithm` オプションを使ってHNSWを実装している以下のアルゴリズムに限定する。 `(+)` 付きは実行時に注意が必要。
+Step. 3は `--algorithm` オプションを使ってHNSWを実装している以下のアルゴリズムに限定する。
 
-* faiss_hnsw
-* hnswlib
-* nmslib (+)
-* pgvector
-* vespa (+)
-* voyager
+* `faiss_hnsw` (`hnsw(faiss)`)
+* `hnswlib`
+* `pgvector`
+* `vespa` (`hnsw(vespa)`)
+* `voyager`
+* `nmslib` (x 実行できず)
 
 実行例:
 
@@ -111,3 +111,27 @@ $ python run.py --parallelism 9 --algorithm hnswlib
 $ mkdir website
 $ python create_website.py --scatter --outputdir website
 ```
+
+voyager の大きいところは遅くて7200秒でタイムアウトしてしまった。
+`--timeout 14400` を指定して再試。
+
+pgvector はテストケースが少ない&めちゃくちゃ遅い。
+遅いからテストケースを少なくしたと考えられる。
+
+追加で次元数が多い `--dataset fashion-mnist-784-euclidean` データセットもテストする。
+実行コマンド例:
+
+```console
+$ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-euclidean --algorithm 'hnsw(faiss)'
+$ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-euclidean --algorithm 'hnswlib'
+$ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-euclidean --algorithm 'pgvector'
+$ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-euclidean --algorithm 'hnsw(vespa)'
+$ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-euclidean --algorithm 'voyager'
+```
+
+`create_website.py` で作ったデータを [results-20230314](./results-20240314/) に置いた。
+考察の続きは [../hnsw-libs-comparison](../hnsw-libs-comparison/) にて行う。
+
+## まとめ
+
+多少手直しが必要であったが、dockerを用いてlocalで ANN Benchmarks を実行し結果を可視化できた。
