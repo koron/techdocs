@@ -111,11 +111,12 @@ systemctl をサブコマンド指定なしで実行するとデフォルトで�
 * `service-log-target`
 * `reset-failed` ユニットの failed 状態をリセットする
 
-## 不要そうなユニットを無効化する、典型的なユースケース
+## まとめ: 不要そうなユニットを無効化する、典型的なユースケース
 
 無効化する場合: `sudo systemctl disable {ユニット名}`
+以後の起動で無効化したユニットは実行されない。
 
-即時に止めたければ: `sudo systemctl stop {ユニット名}`
+ユニットのプロセスやタイマーなどを即時に止めたければ: `sudo systemctl stop {ユニット名}`
 
 そもそもの話、どんなユニットが実行中(もしくは完了済み)なのかを知るには:
 `systemctl list-units` もしくは単に `systemctl`
