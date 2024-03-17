@@ -135,3 +135,8 @@ $ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-eucl
 ## まとめ
 
 多少手直しが必要であったが、dockerを用いてlocalで ANN Benchmarks を実行し結果を可視化できた。
+
+動かすためのPR2つを出した。
+
+* [#496 fix docker tag for Faiss HNSW](https://github.com/erikbern/ann-benchmarks/pull/496)
+* [#497 skip `None` for loaded config data](https://github.com/erikbern/ann-benchmarks/pull/497)
