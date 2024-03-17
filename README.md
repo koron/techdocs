@@ -21,4 +21,4 @@ Title                                                           |Date       |Sta
 [ivf-what-is](./ivf-what-is)                                    |2024-03-01 |Done
 [HNSW-libs-comparison](./hnsw-libs-comparison)                  |2024-03-06 |Done
 [ANN Benchmarks on Local](./annbenchmarks-on-local)             |2024-03-13 |Done
-[Sytemd Basics](./systemd-basic)                                |2024-03-17 |WIP
+[Sytemd Basics](./systemd-basic)                                |2024-03-17 |Done
