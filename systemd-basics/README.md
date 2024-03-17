@@ -128,7 +128,7 @@ systemctl をサブコマンド指定なしで実行するとデフォルトで�
 ユニットの依存関係を見たい場合: `systemctl list-dependencies`
 `--reverse` `--after` `--before` などのオプションを使って検証できる。
 
-それぞれのユニットがenable/disableどっちなのかを知るには:
+全ユニットがenable/disableどっちなのかを知るには:
 `systemctl list-unit-files`
 デフォルト設定と現在の設定を比較できる。
 
