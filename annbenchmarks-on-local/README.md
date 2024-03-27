@@ -132,6 +132,54 @@ $ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-eucl
 `create_website.py` で作ったデータを [results-20230314](https://koron.github.io/techdocs/annbenchmarks-on-local/results-20240314/) に置いた。
 考察の続きは [../hnsw-libs-comparison](../hnsw-libs-comparison/) にて行う。
 
+## 考察
+
+前述の結果をみて考察する。
+
+* HNSW実装: pgvector
+    * 1桁から2桁は速度が遅い
+    * メモリではなくファイルであることに要注意
+        * メモリに収まらないサイズを扱えるハズ
+        * 純粋に大きな数での速度劣化は?
+        * 理論上は `O(log(n))` だと考えられるが、本当にそうか?
+        * pgvector 自身にそれを検証するベンチマークがありそう
+* HNSW実装: ほか
+    * 大きな差異はない: あえて差を見出すならば…
+        * 高いRecallの条件で安定して速いのがFaiss
+            * 実用観点で使いやすそう
+            * 他のアルゴリズムとの組み合わせもしやすい
+    * Javaで使える voyager もJava環境という観点で利用しやすい
+* グラフの見方
+    * データセットを固定してHNSWの実装を比較する場合
+        * Recall(横軸)を固定して、実装毎の縦軸の値を比較する。逆ではない
+        * アルゴリズムはHNSWであるため、Recallを比較することにあまり意味はない
+        * 実装ごとに速度の差が出る
+        * インデックスサイズについても大きな差はできない
+            * データをどう持つか的な意味で少しは差がある
+    * HNSWの実装を固定してデータセットを比較する場合
+        * QPS(縦軸)を固定してRecall(横軸)をデータセットで比較する
+        * HNSWでクラスタリングしやすいデータセットがわかる
+    * サイズの比較はインデックスのみで、データ本体のベクトル圧縮等は考慮されていない
+* MNISTデータセット
+    * HNSWアルゴリズムにおいて好成績になりやすい
+    * MNISTはもともと、明らかに少ない数にクラスタリングされているものを再現するタスク
+        * オリジナルMNISTは手書きの数字画像、10種のクラスタリング
+        * fashion-mnistはファッションアイテム画像、60種のクラスタリング
+    * ローカルリンクが少ない≒QPSが高くなる条件でもRecallが良くなるので、グラフが右側に偏って、実装による差が小さく見える
+* GloVeデータセットは単語のベクトル表現で数も多いため、MNISTにくらべると成績がよくない
+    * ローカルリンクが少ない条件で、目に見えてRecallが悪くなり、実装による細かい差が大きく見える
+
+### pgvectorの公式なベンチマーク
+
+<https://aws.amazon.com/jp/blogs/database/accelerate-hnsw-indexing-and-searching-with-pgvector-on-amazon-aurora-postgresql-compatible-edition-and-amazon-rds-for-postgresql/>
+
+ベンチマークのデータ件数への依存性ではなく、並列数への依存性、インスタンスタイプによる依存性、pgvectorのバージョンによる依存性を計測したAWSのポスト
+
+データ件数と検索にかかる時間もしくはQPSに関する公式ベンチマークは見つけられなかった。
+
+その過程で次の記事を見つけた。なんだこれは?
+[10x Faster than Meta's FAISS](https://www.unum.cloud/blog/2023-11-07-scaling-vector-search-with-intel)
+
 ## まとめ
 
 多少手直しが必要であったが、dockerを用いてlocalで ANN Benchmarks を実行し結果を可視化できた。
@@ -140,3 +188,5 @@ $ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-eucl
 
 * [#496 fix docker tag for Faiss HNSW](https://github.com/erikbern/ann-benchmarks/pull/496)
 * [#497 skip `None` for loaded config data](https://github.com/erikbern/ann-benchmarks/pull/497)
+
+比較結果からHNSW実装とデータセットの関係性を考察した。
