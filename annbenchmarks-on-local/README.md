@@ -177,8 +177,24 @@ $ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-eucl
 
 データ件数と検索にかかる時間もしくはQPSに関する公式ベンチマークは見つけられなかった。
 
+### Usearch
+
 その過程で次の記事を見つけた。なんだこれは?
 [10x Faster than Meta's FAISS](https://www.unum.cloud/blog/2023-11-07-scaling-vector-search-with-intel)
+
+https://github.com/unum-cloud/usearch
+
+* C++で実装
+* SIMD (Arm SVE, x86 AVX-512)
+* f16 / i8
+* View large indexs from disk !?
+* Space-efficient point-clouds with uint40_t, accommodating 4B+ size.
+
+10xまでなら SIMD + f16/i8 で説明が付きそう
+
+ann benchmark には含まれていない
+
+
 
 ## まとめ
 
