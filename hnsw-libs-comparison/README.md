@@ -118,3 +118,4 @@ faissのHNSW実装にはメモリ効率と速度とrecallのバランスを取�
 * メモリに乗りきらない場合
     * PQなどでベクトル及びインデックスを圧縮する(recallは犠牲になる)
     * pgvectorはビルドもクエリも約10倍遅いのでそれが許容できるなら
+* [ANN Benchmarks on local](../annbenchmarks-on-local/) の「考察」により詳しい考察を書いた
