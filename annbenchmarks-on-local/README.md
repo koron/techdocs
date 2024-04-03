@@ -193,6 +193,34 @@ https://github.com/unum-cloud/usearch
 
 ann benchmark には含まれていない
 
+#### usearch 少し試した
+
+最新の ann-benchmarks に合わせて [オリジナルPR](https://github.com/erikbern/ann-benchmarks/pull/451) を修正して計測。
+<https://github.com/koron/ann-benchmarks/tree/usearch-engine-update/ann_benchmarks/algorithms/usearch>
+
+```console
+# Docker image 作成
+$ python install.py --algorithm usearch
+
+# 計測
+$ python run.py --timeout 14400 --parallelism 9 --dataset fashion-mnist-784-euclidean --algorithm usearch
+
+# グラフ出力
+$ python create_website.py --scatter --outputdir website
+```
+
+f32を試した。
+というよりf8はSIMDが利用できず試せなかった。
+プリコンパイルのPythonライブラリがSIMDを無効化してビルドされているようだ。
+自分でコンパイルするのも失敗した。
+失敗理由を調査するまではしなかった。
+AVX512を利用できないCPUを使っており、SIMDの機能を利用しきれない可能性が高かった。
+
+クエリはpgvectorよりは速いが、Faissよりは遅い。
+彼らの主張ではもっとベクトル数が大きい時に速くなるとのことなので、そんなものだろう。
+
+インデックスは、作成に時間がかかり、かつ大きかった。
+今回は
 
 
 ## まとめ
