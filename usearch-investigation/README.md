@@ -56,3 +56,48 @@ SIMD(AVX512)でf8使って100M ベクター超えとなると、
 SIMSIMDのpre-requirementも参照する必要がある。
 
 SIMSIMDもヘッダーライブラリっぽい。Python, Rust, Goのバインディングが確認できた。
+
+### index.hpp
+
+* include バリア
+* バージョン表明
+* 環境判定
+* include: C++ STL
+* マクロ
+    * alignment
+    * debug
+* ユーティリティ関数・テンプレート・クラス
+
+`index_gt` が目的の手続きを実装している。
+
+その構成クラス群:
+
+```
+$ sed -ne '1689,3610p' < include/usearch/index.hpp  | grep '^\s*\(struct\|class\)\b'
+class index_gt {
+    struct precomputed_constants_t {
+    struct candidate_t {
+    class node_t {
+    class neighbors_ref_t {
+    struct usearch_align_m context_t {
+    struct copy_result_t {
+    struct add_result_t {
+    struct match_t {
+    class search_result_t {
+    struct cluster_result_t {
+    struct stats_t {
+        struct slot_level_t {
+    struct node_lock_t {
+    struct candidates_range_t;
+    class candidates_iterator_t {
+    struct candidates_range_t {
+```
+
+ざっくり速度に有利そうなのは3点
+
+1. SIMDによる距離関数の高速化
+2. SIMDに特化した(実質)量子化
+3. マルチスレッド aware なコード
+
+    * ロック
+    * 最大スレッド数に応じたバッファ
