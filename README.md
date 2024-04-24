@@ -24,3 +24,4 @@ Title                                                           |Date       |Sta
 [Sytemd Basics](./systemd-basic)                                |2024-03-17 |Done
 [Usearch Investigation](./usearch-investigation)	            |2024-04-03 |WIP
 [vision-language-model](./vision-language-model)                |2024-04-17 |WIP
+[Vector ops with SIMD](./vector-ops-with-simd)                  |2024-04-24 |WIP
