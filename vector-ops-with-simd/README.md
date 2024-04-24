@@ -21,7 +21,7 @@ universal intrinsicsを使って書いて、ビルド時に有効化していれ
 
 次に[Faiss](https://github.com/facebookresearch/faiss)。
 もともとfaiss-gpu等もありSIMDも使ってるだろうとは考えていたが、やはりありそう。
-ブログ: [4-bit PQの解説 (2024-06-21 松井勇佑先生だ!)] によれば、4-bit PQ のARM  SIMDを使った版を実装してFaissにコントリビュートしたという話。
+ブログ: [4-bit PQの解説 (2024-06-21 松井勇佑先生だ!)](https://mti-lab.github.io/blog/2021/06/21/4bitpq.html) によれば、4-bit PQ のARM  SIMDを使った版を実装してFaissにコントリビュートしたという話。
 いわゆる、ただのベクトル距離計算に用いたわけではない点に留意が必要。
 なお、ざっくり16並列になるらしい。
 
