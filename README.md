@@ -25,3 +25,4 @@ Title                                                           |Date       |Sta
 [Usearch Investigation](./usearch-investigation)	            |2024-04-03 |WIP
 [vision-language-model](./vision-language-model)                |2024-04-17 |WIP
 [Vector ops with SIMD](./vector-ops-with-simd)                  |2024-04-24 |WIP
+[SIMD in Java](./simd-in-java)	                                |2024-05-01 |WIP
