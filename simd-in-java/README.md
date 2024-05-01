@@ -266,3 +266,6 @@ vectorAdd: 347[msec]
 
 * [JavaによるGPUプログラミング 2020-04-24](https://blogs.oracle.com/otnjp/post/programming-the-gpu-in-java-ja)
 * [Java で CUDA を導入する手順メモ 2015-06-21](https://kano.arkoak.com/2015/06/21/jcuda/)
+* [jcuda.org](http://javagl.de/jcuda.org/)
+* [Java bindings for OpenCL](http://www.jocl.org/)
+* [TornadoVM](https://www.tornadovm.org/)
