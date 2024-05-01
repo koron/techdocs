@@ -22,3 +22,44 @@ CoCa: Image-Text Pre-training with Contrastive Captioners
 画像は大きいから分割して入れる必要があるのでは?
 分割した画像間に、なんらかの関係性を保持して利用できるはずでは?
 それは文章とかにも関係するのでは?
+
+### InsturctBLIPS
+
+Paper: <https://arxiv.org/abs/2305.06500>
+
+* [BLIPというモデルについて調べてみた](https://eng-blog.iij.ad.jp/archives/23804)
+* [Japanese InstructBLIP Alpha](https://ja.stability.ai/blog/japanese-instructblip-alpha)
+
+
+### LLaVA
+
+LLaVA = Large Language and Vision Assistant (2023-Apr)
+
+* [LLaVA](https://github.com/haotian-liu/LLaVA)
+    * Paper: <https://arxiv.org/abs/2304.08485>
+* [マイクロソフト、130億パラメータの言語・視覚チャットボット「LLaVA」をオープンソース化](https://www.infoq.com/jp/news/2023/07/microsoft-llava-chatbot/)
+* [日本語LLMでLLaVAの学習を行ってみた](https://qiita.com/toshi_456/items/248005a842725f9406e3)
+
+    日本語LLMをLLaVAで使えるようにする方法を通じてLLaVAの構成が明らかになる。
+
+構造は3つのモジュールからなる
+
+* Vision Encoder: おそらくオートエンコーダーの前半部分
+* LLM
+* Vision Projector: Vision Encoderの出力をLLMへ繋げる部分(コンバーター的な?)
+
+学習方法:
+
+1. Vision Encoder と LLMを凍結し Projector を学習
+2. Vision Encoder のみを凍結し、Projector & LLM を学習
+
+事前学習データが600Kと少ない。ファインチューニングは158K
+
+### Others
+
+* GPT4-V
+    * [画像を理解する大規模言語モデル「GPT-4V」とは？](https://note.com/generative_ai/n/n869a74f9eb53)
+* Gemini
+* YOLO (You Only Look Once)
+    * [【物体検出手法の歴史 : YOLOの紹介】](https://qiita.com/cv_carnavi/items/68dcda71e90321574a2b)
+    * [YOLOとは？なぜ早い？物体検出の従来手法との違い・メリット・デメリットを詳しく解説](https://ai-market.jp/technology/yolo/)
