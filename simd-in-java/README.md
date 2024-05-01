@@ -3,7 +3,7 @@
 JDK 21 の時点で2つの方法がある。
 
 * HotSpot JavaVMの最適化でSIMDを使う
-* java.incubator.vector を使う
+* jdk.incubator.vector を使う
 * JavaからGPU
 
 ## HotSpot JavaVMの最適化でSIMDを使う
@@ -138,11 +138,11 @@ SIMDによる最適化が適用される条件は大まかに以下の通り:
 * CUDAを使う方法、あったりしない?
     * 数値計算専門ライブラリも調べたほうが良さそう
 
-## java.incubator.vector を使う
+## jdk.incubator.vector を使う
 
-参考: [JavaDoc java.incubator.vector](https://docs.oracle.com/javase/jp/21/docs/api/jdk.incubator.vector/jdk/incubator/vector/package-summary.html)
+参考: [JavaDoc jdk.incubator.vector](https://docs.oracle.com/javase/jp/21/docs/api/jdk.incubator.vector/jdk/incubator/vector/package-summary.html)
 
-とりあえず前述のコードを java.incubator.vector を用いて書き直して計測した結果、おおよそ同等の速度が出た。
+とりあえず前述のコードを jdk.incubator.vector を用いて書き直して計測した結果、おおよそ同等の速度が出た。
 
 <details>
 <summary>floatのSIMD演算</summary>
