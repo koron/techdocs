@@ -4,6 +4,7 @@ JDK 21 の時点で2つの方法がある。
 
 * HotSpot JavaVMの最適化でSIMDを使う
 * java.incubator.vector を使う
+* JavaからGPU
 
 ## HotSpot JavaVMの最適化でSIMDを使う
 
@@ -131,3 +132,137 @@ SIMDによる最適化が適用される条件は大まかに以下の通り:
     * オーバーヘッドを考えれば実倍率は極めて妥当
 * CUDAを使う方法、あったりしない?
     * 数値計算専門ライブラリも調べたほうが良さそう
+
+## java.incubator.vector を使う
+
+参考: [JavaDoc java.incubator.vector](https://docs.oracle.com/javase/jp/21/docs/api/jdk.incubator.vector/jdk/incubator/vector/package-summary.html)
+
+とりあえず前述のコードを java.incubator.vector を用いて書き直して計測した結果、おおよそ同等の速度が出た。
+
+<details>
+<summary>floatのSIMD演算</summary>
+
+```java
+import java.util.Arrays;
+
+import jdk.incubator.vector.FloatVector;
+import jdk.incubator.vector.VectorMask;
+import jdk.incubator.vector.VectorSpecies;
+
+public class SIMDVectorFloat {
+    static final int SIZE = 1024 * 1024;
+    static final float[] a = new float[SIZE];
+    static final float[] b = new float[SIZE];
+
+    static final VectorSpecies<Float> SPECIES = FloatVector.SPECIES_PREFERRED;
+
+    static {
+        Arrays.fill(a, (float)1);
+        Arrays.fill(b, (float)2);
+    }
+
+    public static void vectorAdd(){
+        for (int i = 0; i < a.length; i += SPECIES.length()) {
+            VectorMask<Float> m = SPECIES.indexInRange(i, a.length);
+            FloatVector va = FloatVector.fromArray(SPECIES, a, i, m);
+            FloatVector vb = FloatVector.fromArray(SPECIES, b, i, m);
+            FloatVector vc = va.add(vb);
+            vc.intoArray(a, i);
+        }
+    }
+    public static void main(String[] args){
+        // warming up
+        for(int i=0; i<100; i++) vectorAdd();
+        // measure
+        long t0 = System.currentTimeMillis();
+        for(int i=0; i<10000; i++){
+            vectorAdd();
+        }
+        long t1 = System.currentTimeMillis();
+        System.out.printf("vectorAdd: %,d[msec]", t1 - t0);
+    }
+}
+```
+
+```console
+$ javac --add-modules jdk.incubator.vector SIMDVectorFloat.java
+警告: 実験的なモジュールを使用しています: jdk.incubator.vector
+警告1個
+
+$ java  --add-modules jdk.incubator.vector SIMDVectorFloat
+WARNING: Using incubator modules: jdk.incubator.vector
+vectorAdd: 1,759[msec]
+```
+</details>
+
+<details>
+<summary>byteのSIMD演算</summary>
+
+```java
+import java.util.Arrays;
+
+import jdk.incubator.vector.ByteVector;
+import jdk.incubator.vector.VectorMask;
+import jdk.incubator.vector.VectorSpecies;
+
+public class SIMDVectorByte {
+    static final int SIZE = 1024 * 1024;
+    static final byte[] a = new byte[SIZE];
+    static final byte[] b = new byte[SIZE];
+
+    static final VectorSpecies<Byte> SPECIES = ByteVector.SPECIES_PREFERRED;
+
+    static {
+        Arrays.fill(a, (byte)1);
+        Arrays.fill(b, (byte)2);
+    }
+
+    public static void vectorAdd(){
+        for (int i = 0; i < a.length; i += SPECIES.length()) {
+            VectorMask<Byte> m = SPECIES.indexInRange(i, a.length);
+            ByteVector va = ByteVector.fromArray(SPECIES, a, i, m);
+            ByteVector vb = ByteVector.fromArray(SPECIES, b, i, m);
+            ByteVector vc = va.add(vb);
+            vc.intoArray(a, i);
+        }
+    }
+    public static void main(String[] args){
+        // warming up
+        for(int i=0; i<100; i++) vectorAdd();
+        // measure
+        long t0 = System.currentTimeMillis();
+        for(int i=0; i<10000; i++){
+            vectorAdd();
+        }
+        long t1 = System.currentTimeMillis();
+        System.out.printf("vectorAdd: %,d[msec]", t1 - t0);
+    }
+}
+```
+
+```console
+$ javac --add-modules jdk.incubator.vector SIMDVectorByte.java
+警告: 実験的なモジュールを使用しています: jdk.incubator.vector
+警告1個
+
+$ java --add-modules jdk.incubator.vector SIMDVectorByte.java
+WARNING: Using incubator modules: jdk.incubator.vector
+vectorAdd: 347[msec]
+```
+</details>
+
+### 考察
+
+* オーバーヘッドはほぼ同等か、じゃっかん大きいかも
+* 明示的にSIMDが使えるのは良い
+* 利用可能な演算が明確なのも良い
+* コードが一見なにしてるのかわからないのは良くない
+* C/C++のSIMD intrinsicsに比べて抽象度が高い
+* incubatorなため将来性に不安がある
+
+## JavaでGPU (CUDA)を使う方法の調査
+
+簡単にサーベイを。
+
+* [JavaによるGPUプログラミング 2020-04-24](https://blogs.oracle.com/otnjp/post/programming-the-gpu-in-java-ja)
+* [Java で CUDA を導入する手順メモ 2015-06-21](https://kano.arkoak.com/2015/06/21/jcuda/)
