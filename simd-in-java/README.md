@@ -274,3 +274,19 @@ vectorAdd: 347[msec]
 * [jcuda.org](http://javagl.de/jcuda.org/)
 * [Java bindings for OpenCL](http://www.jocl.org/)
 * [TornadoVM](https://www.tornadovm.org/)
+
+## サンプル
+
+[koron/JavaSIMDTest](https://github.com/koron/JavaSIMDTest)
+
+やってること
+
+* SIMD最適化が効いてるかどうかの、2013年の検証 & その更新
+* 距離関数をSIMDで書いてみてそのパフォーマンス評価
+
+わかったこと
+
+* 集約(aggregation)処理があるとSIMD最適化が効きにくい
+* 自前で jdk.incubator.vector を使えば高速に書ける
+    * ただしcosine距離はいまひとつ速くならない
+    * 変数(XMMレジスタ)か集約処理が多すぎる?

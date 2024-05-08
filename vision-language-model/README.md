@@ -63,3 +63,6 @@ LLaVA = Large Language and Vision Assistant (2023-Apr)
 * YOLO (You Only Look Once)
     * [【物体検出手法の歴史 : YOLOの紹介】](https://qiita.com/cv_carnavi/items/68dcda71e90321574a2b)
     * [YOLOとは？なぜ早い？物体検出の従来手法との違い・メリット・デメリットを詳しく解説](https://ai-market.jp/technology/yolo/)
+* [アップルがLLMのようにスケーラブルな大規模自己回帰画像モデルを開発](アップルがLLMのようにスケーラブルな大規模自己回帰画像モデルを開発)
+* [ImageNet データセットとは](https://cvml-expertguide.net/terms/dataset/image-dataset/imagenet/)
+    * [WordNet](https://ja.wikipedia.org/wiki/WordNet) ベース

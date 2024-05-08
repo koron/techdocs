@@ -93,6 +93,8 @@ class index_gt {
     struct candidates_range_t {
 ```
 
+## まとめ
+
 ざっくり速度に有利そうなのは3点
 
 1. SIMDによる距離関数の高速化
