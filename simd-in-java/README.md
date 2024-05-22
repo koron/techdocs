@@ -290,3 +290,17 @@ vectorAdd: 347[msec]
 * 自前で jdk.incubator.vector を使えば高速に書ける
     * ただしcosine距離はいまひとつ速くならない
     * 変数(XMMレジスタ)か集約処理が多すぎる?
+
+## コンパイラ・コントロール
+
+`-XX:+UnlockDiagnosticVMOptions` を指定すると[コンパイラ・コントロール](https://docs.oracle.com/javase/jp/21/vm/compiler-control1.html)が有効になる。
+
+`-XX:+CompilerDirectivesPrint` を指定するとコンパイラ・コントロールのディレクティブが確認できる。
+その中に `Vectorize` というのがあり、何かしらのコントロールが効きそう。
+
+わかったこと
+
+* 浮動小数点数の計算にAVX(SIMD)命令を利用している
+* AVXがもつ大量のレジスタを全て有効活用しようとする
+    * 直列に全部読み込んでレジスタ上でなんとかしようとしてる
+* 並列演算に利用するレジスタが足りず、並列演算できない

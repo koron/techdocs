@@ -66,3 +66,58 @@ LLaVA = Large Language and Vision Assistant (2023-Apr)
 * [アップルがLLMのようにスケーラブルな大規模自己回帰画像モデルを開発](https://ai-scholar.tech/articles/computer-vision/AIM)
 * [ImageNet データセットとは](https://cvml-expertguide.net/terms/dataset/image-dataset/imagenet/)
     * [WordNet](https://ja.wikipedia.org/wiki/WordNet) ベース
+
+## ImageNetから始めるデータセット
+
+### ImageNetの課題
+
+* モデル側の性能がサチった ≒ データ量が少ない
+* バイアスが強くなった
+    * ラベル誤りに対して過学習
+* 複数物体の写り込みに正しくアノテーションされてない
+* 人物に対する配慮不足
+    * プライバシー
+    * 侮辱的表現
+
+### ImageNetの後継
+
+* [PASS](https://www.robots.ox.ac.uk/~vgg/data/pass/)
+    * [PASS: An ImageNet replacement for self-supervised pretraining without humans](https://arxiv.org/abs/2109.13228)
+
+    * [The End Of ImageNet](https://analyticsindiamag.com/the-end-of-imagenet/)
+* [FGVC-Aircraft](https://paperswithcode.com/dataset/fgvc-aircraft-1)
+    航空機のデータ
+* [iNaturalist 2018, 2019, and 2021](https://paperswithcode.com/dataset/inaturalist)
+    自然物のデータ
+* [WebVision-1000](https://paperswithcode.com/dataset/webvision-database)
+    FlickrやGoogle画像検索のデータ
+* [YFCC100M](https://paperswithcode.com/dataset/yfcc100m)
+
+<https://paperswithcode.com/datasets> にいろんなデータセットの情報がまとまってそう。
+
+そもそもラベルありのデータを使うのは時代遅れかも。
+
+### 学習方法とデータセット
+
+* SSL (Self-Supervised Learning)
+* HPT (Hierarchical Pre-Training)
+* 教師無し学習 (unsupervised method)
+
+### 画像に対する教師無し学習
+
+* [Unsupervised Pre-Training of Image Features on Non-Curated Data](https://arxiv.org/abs/1905.01278) (2019, Facebook)
+    YFCC100Mを用いて、教師無しで事前学習する方法
+* [Image Representations Learned With Unsupervised Pre-Training Contain Human-like Biases](https://arxiv.org/abs/2010.15052)
+    そうやって学習したら人間に近い特徴が得られたよ
+* [End-to-End Unsupervised Vision-and-Language Pre-training with Referring Expression Matching](https://aclanthology.org/2022.emnlp-main.742/) (2022)
+    教師無しは外部の物体検出に依存し、制限を受ける。
+* [DETReg: Unsupervised Pretraining with Region Priors for Object Detection](https://qiita.com/sasakits/items/d7c89dc7f055b2fa6152) (2021)
+* [Unsupervised Learning of Visual Features by Contrasting Cluster Assignments](https://arxiv.org/abs/2006.09882)
+* [画像に対する自己教師あり表現学習手法について②](https://blog.recruit.co.jp/data/articles/ssl_vision_02/)
+    サーベイとして素晴らしい
+
+## Vision Transformer
+
+* [画像認識の大革命。AI界で話題爆発中の「Vision Transformer」を解説！](https://qiita.com/omiita/items/0049ade809c4817670d7)
+* [Vision Transformerのモデル構造](https://qiita.com/wakayama_90b/items/55bba80338615c7cce73)
+* [画像識別(クラスタ識別)タスク](https://paperswithcode.com/task/image-classification)
