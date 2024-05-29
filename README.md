@@ -23,6 +23,6 @@ Title                                                           |Date       |Sta
 [ANN Benchmarks on Local](./annbenchmarks-on-local)             |2024-03-27 |Done
 [Sytemd Basics](./systemd-basic)                                |2024-03-17 |Done
 [Usearch Investigation](./usearch-investigation)	            |2024-04-03 |Done
-[vision-language-model](./vision-language-model)                |2024-04-17 |WIP
+[vision-language-model](./vision-language-model)                |2024-04-17 |Done
 [Vector ops with SIMD](./vector-ops-with-simd)                  |2024-04-24 |Done
 [SIMD in Java](./simd-in-java)	                                |2024-05-01 |WIP
