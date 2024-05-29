@@ -8,7 +8,7 @@ JDK 21 の時点で2つの方法がある。
 
 ## TL;DR
 
-* SIMDを使うならば [`jdk.incubator.vector`](https://docs.oracle.com/javase/jp/21/docs/api/jdk.incubator.vector/jdk/incubator/vector/package-summary.html) パッケージを使って書くのが良い。
+* 現時点でSIMDを使うならば [`jdk.incubator.vector`](https://docs.oracle.com/javase/jp/21/docs/api/jdk.incubator.vector/jdk/incubator/vector/package-summary.html) パッケージを使って直接書く方が良い。
     * JVMのJIT最適化に頼るとSIMDが有効活用されないケースが多い
 * GPUを使う手法はあるがJNIを使ったモジュールが必須
 
@@ -1059,3 +1059,13 @@ JVMにはc1とc2の2種類のJITコンパイルがある。c1は実行前の粗�
 [/Disassembly]
 ```
 </details>
+
+実際にはAVXであるためfloatは8要素まとめて操作していた。
+思いのほか、観測できた実効率が良くない。
+SSEの4要素だったら決して悪くはなかった。
+
+> 現実のCPUの例としてIntelの資料を見ると、AVX使用時のCPUはクロック周波数が低下する可能性があることが示唆されています。また、SIMD化しやすい比較的単純な箇所の命令数がSIMD命令によって削減されると、プログラム全体のIPCは低下する可能性があります。
+
+[引用元: SIMDプログラミング入門](https://qiita.com/saka1_p/items/72c7755086ec985cade6#:~:text=%E7%8F%BE%E5%AE%9F%E3%81%AECPU%E3%81%AE%E4%BE%8B%E3%81%A8%E3%81%97%E3%81%A6Intel%E3%81%AE%E8%B3%87%E6%96%99%E3%82%92%E8%A6%8B%E3%82%8B%E3%81%A8%E3%80%81AVX%E4%BD%BF%E7%94%A8%E6%99%82%E3%81%AECPU%E3%81%AF%E3%82%AF%E3%83%AD%E3%83%83%E3%82%AF%E5%91%A8%E6%B3%A2%E6%95%B0%E3%81%8C%E4%BD%8E%E4%B8%8B%E3%81%99%E3%82%8B%E5%8F%AF%E8%83%BD%E6%80%A7%E3%81%8C%E3%81%82%E3%82%8B%E3%81%93%E3%81%A8%E3%81%8C%E7%A4%BA%E5%94%86%E3%81%95%E3%82%8C%E3%81%A6%E3%81%84%E3%81%BE%E3%81%999%E3%80%82%E3%81%BE%E3%81%9F%E3%80%81SIMD%E5%8C%96%E3%81%97%E3%82%84%E3%81%99%E3%81%84%E6%AF%94%E8%BC%83%E7%9A%84%E5%8D%98%E7%B4%94%E3%81%AA%E7%AE%87%E6%89%80%E3%81%AE%E5%91%BD%E4%BB%A4%E6%95%B0%E3%81%8CSIMD%E5%91%BD%E4%BB%A4%E3%81%AB%E3%82%88%E3%81%A3%E3%81%A6%E5%89%8A%E6%B8%9B%E3%81%95%E3%82%8C%E3%82%8B%E3%81%A8%E3%80%81%E3%83%97%E3%83%AD%E3%82%B0%E3%83%A9%E3%83%A0%E5%85%A8%E4%BD%93%E3%81%AEIPC%E3%81%AF%E4%BD%8E%E4%B8%8B%E3%81%99%E3%82%8B%E5%8F%AF%E8%83%BD%E6%80%A7%E3%81%8C%E3%81%82%E3%82%8A%E3%81%BE%E3%81%9910%E3%80%82)
+
+AVXを使えば単純に速くなるということでもなさそうだ。
