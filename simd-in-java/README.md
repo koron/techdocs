@@ -11,7 +11,8 @@ JDK 21 の時点で2つの方法がある。
 * 現時点でSIMDを使うならば [`jdk.incubator.vector`](https://docs.oracle.com/javase/jp/21/docs/api/jdk.incubator.vector/jdk/incubator/vector/package-summary.html) パッケージを使って直接書く方が良い。
     * JVMのJIT最適化に頼るとSIMDが有効活用されないケースが多い
 * GPUを使う手法はあるがJNIを使ったモジュールが必須
-
+* SIMDで距離計算を行うなら、内積距離が計算量が少ない
+    * 事前に正規化を行えば、実質コサイン距離と同等
 
 ## HotSpot JavaVMの最適化でSIMDを使う
 
