@@ -26,3 +26,4 @@ Title                                                           |Date       |Sta
 [vision-language-model](./vision-language-model)                |2024-04-17 |WIP
 [Vector ops with SIMD](./vector-ops-with-simd)                  |2024-04-24 |Done
 [SIMD in Java](./simd-in-java)	                                |2024-05-01 |Done
+[Finetune PaliGemma](./finetune-paligemma)	                    |20240-6-05 |WIP

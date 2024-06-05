@@ -121,3 +121,14 @@ LLaVA = Large Language and Vision Assistant (2023-Apr)
 * [画像認識の大革命。AI界で話題爆発中の「Vision Transformer」を解説！](https://qiita.com/omiita/items/0049ade809c4817670d7)
 * [Vision Transformerのモデル構造](https://qiita.com/wakayama_90b/items/55bba80338615c7cce73)
 * [画像識別(クラスタ識別)タスク](https://paperswithcode.com/task/image-classification)
+
+## VLMの構成技法
+
+* [AI Con USA: (Half-day Tutorials) Image Classification using LLMs and Transfer Learning](https://aiconusa.techwell.com/program/tutorials/image-classification-using-llms-and-transfer-learning-ai-con-usa-2024)
+* [【画像から言語へ】生成AI(VLM)の現状とビジネス応用の壁を考える (Cyber Agent)](https://developers.cyberagent.co.jp/blog/archives/45503/)
+
+    > 「AIを活用しランディングページの効果の事前予測を行い、広告効果を最大化する」を目指すプロダクトに携わって
+
+    評価が難しいことがビジネスへの導入の障害になっている
+
+* [VILA を使用した NVIDIA ハードウェア上のビジュアル言語モデル](https://developer.nvidia.com/ja-jp/blog/visual-language-models-on-nvidia-hardware-with-vila/)
