@@ -129,3 +129,5 @@ training dataは少し詳しい解説になっている。
 
 学習後にvalidation dataを食わせた。
 training dataに近い文章が出てくるようになっていた。
+
+[実際のノートブック](./01_run_anyway.ipynb)
