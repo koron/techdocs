@@ -131,3 +131,135 @@ training dataは少し詳しい解説になっている。
 training dataに近い文章が出てくるようになっていた。
 
 [実際のノートブック](./01_run_anyway.ipynb)
+
+## Try with another dataset
+
+先に紹介した <https://blog.roboflow.com/how-to-fine-tune-paligemma/> にある数字・記号識別のfinetuneをColabで試してみる。
+[参照: Colabのノートブック(オリジナル)](https://colab.research.google.com/github/roboflow-ai/notebooks/blob/main/notebooks/how-to-finetune-paligemma-on-detection-dataset.ipynb?ref=blog.roboflow.com)
+
+roboflowの **Private API Key** が必要なことに注意。
+
+学習前は書かれた図形を必要以上に分解して、複数の字形を識別してしまう。
+
+使ってるデータセット <https://universe.roboflow.com/roboflow-jvuqo/number-ops-j1426/dataset/1> 。
+約4900毎のトレーニングセット、約1600枚の検証セット、約600枚のテストセット。
+
+学習後は、1画像に付き1つを認識したことを確認できた。
+
+finetuneしたモデルのダウンロードもできるようだが、大きいせいかうまくいかなかった。
+時間がかかってただけかもしれない。
+
+### PaliGemmaのFinetune済モデルに使われたデータセットを見てみる
+
+
+* [AI2 Diagram Dataset](https://allenai.org/data/diagrams)
+
+    図を元にした設問と回答のデータセット
+
+* [A-OKVQA](https://allenai.org/project/a-okvqa/home)
+
+    回答に多様な知識を必要とする、画像と設問のデータセット(VQA)
+    回答には "MC (Multiple-Choice) Answers" と "Direct Answers" の区別がある。
+
+* [COCO-35L](https://arxiv.org/pdf/2205.12522)
+
+    3600枚の画像に対する36ヵ国語によるアノテーション済みデータ
+
+* [COCO Captions](https://cocodataset.org/#overview)
+
+    Common Object in Context のキャプション付きデータ
+    実体 <https://cocodataset.org/#captions-2015> かな?
+
+* [DocVQA](https://www.docvqa.org/)
+
+    目的主導で、人間が定義する高次タスクを行えるようにする
+
+* [GQA](https://cs.stanford.edu/people/dorarad/gqa/about.html)
+
+    シーングラフに対するVQAを指向している。
+    既存データセットが偏っててベンチマークに向かないことに対するアンチテーゼ
+
+* [InfographicVQA](https://openaccess.thecvf.com/content/WACV2022/papers/Mathew_InfographicVQA_WACV_2022_paper.pdf)
+
+    インフォグラフィックから知識を取り出すVQA
+
+* [NLVR](https://lil.nlp.cornell.edu/nlvr/)
+
+    画像に対して与えられた文の真偽を判定するタスク。
+    データセット自体は後継があるのでobsolete
+
+* [OCR-VQA](https://ocr-vqa.github.io/)
+
+    画像内のテキストを読んだ上でのVQA
+
+* [OK-VQA](https://okvqa.allenai.org/)
+
+    前出のA-OKVQAの前身
+
+* [RefCOCO](https://arxiv.org/abs/1608.00272)
+
+    ???
+
+* [RSVQA-HR](https://zenodo.org/records/6344367)
+
+    リモートセンシング専門のVQA。高解像版
+
+* [RSVQA-LR](https://zenodo.org/records/6344367)
+
+    リモートセンシング専門のVQA。低解像版
+
+* [SciCap](https://arxiv.org/abs/2110.11624)
+
+    科学的な図に対するキャプションの生成
+
+* [ScienceQA](https://scienceqa.github.io/)
+
+    マルチモーダルな推論で科学の質問に答えるVQA
+
+* [Screen2Words](https://arxiv.org/abs/2108.03353)
+
+    モバイルUIの要約(文章)を生成する
+
+* [SceneTextVQA](https://arxiv.org/abs/1905.13648)
+
+    画像内のテキストに対するVQA
+
+* [TallyQA](https://arxiv.org/abs/1810.12440)
+
+    オブジェクト間の関係性がある計数(数え上げ)のデータセット
+
+* [TextCaps](https://textvqa.org/textcaps/)
+
+    画像内のテキストを読み取って適切なキャプションを付けたデータセット
+
+* [TextVQA](https://textvqa.org/)
+
+    画像内のテキストを読んで推論するVQA
+
+* [VizWizVQA](https://vizwiz.org/tasks-and-datasets/vqa/)
+
+    盲人の質問に答えるVQA
+
+* [VQA](https://visualqa.org/index.html)
+
+    自由形式のVQA。初出2015年、最終更新2017年と古い
+
+* [Widget Captioning](https://arxiv.org/abs/2010.04295)
+
+    モバイルUIに対するキャプションを生成する
+
+## Kaggle で finetunabble か否かはどういう違いがある?
+
+Finetune済みのモデルを再度Finetuneすると…
+
+利点:
+
+* 精度向上
+* 新しいタスクへの転移
+* 学習データが少ないケースへの対応
+
+欠点:
+
+* 過学習のリスク
+* 計算コスト
+* データ品質
