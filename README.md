@@ -27,4 +27,4 @@ Title                                                           |Date       |Sta
 [Vector ops with SIMD](./vector-ops-with-simd)                  |2024-04-24 |Done
 [SIMD in Java](./simd-in-java)	                                |2024-05-01 |Done
 [Finetune PaliGemma](./finetune-paligemma)	                    |2024-06-05 |WIP
-[CyberAgnetのLVM: llava-calm2-siglip]((./llava-calm2-siglip)    |2024-06-20 |WIP
+[CyberAgnetのLVM: llava-calm2-siglip](./llava-calm2-siglip)    |2024-06-20 |WIP
