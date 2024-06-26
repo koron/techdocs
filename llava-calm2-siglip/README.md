@@ -600,7 +600,7 @@ index 81b4992a..ee5f60b9 100644
      }
 ```
 
-<details>
+</details>
 
 ## HF Transformers の疑問点を追う
 
