@@ -602,3 +602,52 @@ index 81b4992a..ee5f60b9 100644
 
 <details>
 
+## HF Transformers の疑問点を追う
+
+HF Transformers & Torchの知識が圧倒的に足りない。
+そこを補いながらつめていく。
+
+疑問点:
+
+* 層の一覧表示の方法は?
+* model.to(0) の意味は?
+* 層の間の接続はどのように定義されているのか?
+    * 層の名前付けのルールは?
+* 量子化(AWQ)の方法は?
+* ファインチューンの方法は?
+* プリプロセッサの構成は?
+    * テキストエンコーダー、デコーダー
+    * 画像エンコーダー
+
+### 層の一覧表示の方法
+
+`named_parameters()` がジェネレーターを返す。
+
+```python
+for name, param in model.named_parameters():
+    print(f"{name:80s} {str(param.shape):30s} {param.dtype}")
+```
+
+参照: [./list-layers.ipynb](./list-layers.ipynb) 
+
+### model.to(0) の意味
+
+`to(0)` をすることでモデルがGPUに移されるらしい。
+`0` はデバイス番号かなにかか。
+
+実体は [`torch.nn.Moddule.to`](https://pytorch.org/docs/stable/generated/torch.nn.Module.html#torch.nn.Module.to) だった。
+
+<https://discuss.pytorch.org/t/model-cuda-vs-model-to-device/93343> によれば `model.cuda()` と `model.to(device)` は同じ効果である。
+
+`device` に数字 `0` が指定されているけれども、cudaであろうことは疑いようがない。
+今はこれ以上、深入りしなくてよいだろう。
+
+### 層間の接続はどのように定義されているのか
+
+読み込みは `PreTrainedModel.from_pretrained()` で行われる。
+
+transforms/models/llava や paligemma あたりにそれっぽい参照構造がある。
+models/ 下にその連結構造を規定するクラスが置いてあるってことで良かろう。
+
+* languange\_model: LlamaForCausalLM
+* vision\_tower: SiglipVisionTransformer
