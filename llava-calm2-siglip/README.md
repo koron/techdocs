@@ -651,3 +651,60 @@ models/ 下にその連結構造を規定するクラスが置いてあるって
 
 * languange\_model: LlamaForCausalLM
 * vision\_tower: SiglipVisionTransformer
+
+### CPUだけでの推論
+
+`{param.is_cuda}` で各層がCUDAに展開されているか分かる。
+やってみると全てのレイヤーがCUDAになった。
+もしかして…仮想メモリ的にあつかってるかしら?
+
+CPUで推論させたらloadが100%へ張り付かない。
+マルチスレッド実装がされてないか甘いと思われる。
+1時間ほどその状態が続いた後、100%になる状態が約10分続き推論が完了した。
+
+vision towerの計算は並列でできない、みたいなことがあるのかもしれない。
+
+推論にかかった時間は以下の通り。
+
+```
+CPU times: total: 3h 6s
+Wall time: 1h 11min 2s
+```
+
+ここから以下の式で100%に張り付いていた時間を推定する。
+7分ちょっとくらい。感覚的には合致する。
+
+    (3h6s - 1h11min2s) / 15 = 436s = 7m16s
+
+## GPUを用いた学習
+
+<https://huggingface.co/docs/transformers/ja/model_memory_anatomy>
+
+学習時のメモリはモデルサイズよりも大きくなる。
+どのくらい大きくなるかはバッチサイズによる。
+バッチサイズは大きいほど収束が速かったり、最終的な性能向上が見込めたりする。
+例示されたコードでは1.3GBのモデルの学習に7.5GBのメモリが必要になっている。
+約5倍。
+
+そこからなぜそのようなメモリが必要なのか、
+どこが速度的なボトルネックになるのかを、この記事は解説している。
+
+<https://huggingface.co/docs/transformers/ja/perf_train_gpu_one>
+
+Trainerを使う方法とPyTorchを使う方法がある。
+
+## 未分類
+
+### 失敗: Flash Attention 2
+
+Flash Attention 2というのを使うと推論が速くなる場合があるらしい。
+ネイティブモジュールのコンパイルが必要でそれに失敗するためNG
+
+    pip install -U flash-attn --no-build-isolation
+
+### 失敗: DeepSpeed
+
+DeepSpeedというのを使うと学習が速くなるというのでインストールしようとしたが失敗。
+プレコンパイルの async\_io が別途必要らしい。
+そして async\_io はWindowsに未対応。
+DeepSpeedはmicrosoft製…
