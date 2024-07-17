@@ -23,8 +23,9 @@ Title                                                           |Date       |Sta
 [ANN Benchmarks on Local](./annbenchmarks-on-local)             |2024-03-27 |Done
 [Sytemd Basics](./systemd-basic)                                |2024-03-17 |Done
 [Usearch Investigation](./usearch-investigation)	            |2024-04-03 |Done
-[vision-language-model](./vision-language-model)                |2024-04-17 |WIP
+[vision-language-model](./vision-language-model)                |2024-04-17 |Done
 [Vector ops with SIMD](./vector-ops-with-simd)                  |2024-04-24 |Done
 [SIMD in Java](./simd-in-java)	                                |2024-05-01 |Done
-[Finetune PaliGemma](./finetune-paligemma)	                    |2024-06-05 |WIP
-[CyberAgnetのLVM: llava-calm2-siglip](./llava-calm2-siglip)    |2024-06-20 |WIP
+[Finetune PaliGemma](./finetune-paligemma)	                    |2024-06-05 |Done
+[CyberAgnetのLVM: llava-calm2-siglip](./llava-calm2-siglip)     |2024-06-20 |WIP
+[Finetune HF チュートリアル](./finetune-hf-tutorial)            |2024-07-17 |WIP

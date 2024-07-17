@@ -132,3 +132,8 @@ LLaVA = Large Language and Vision Assistant (2023-Apr)
     評価が難しいことがビジネスへの導入の障害になっている
 
 * [VILA を使用した NVIDIA ハードウェア上のビジュアル言語モデル](https://developer.nvidia.com/ja-jp/blog/visual-language-models-on-nvidia-hardware-with-vila/)
+
+## 結論
+
+VLMと、前提となる知識を調査した。
+日本語VLMとしてはCyberAgentの CALM2 + SigLIP を試すことにした。

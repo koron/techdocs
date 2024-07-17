@@ -693,7 +693,7 @@ Wall time: 1h 11min 2s
 
 Trainerを使う方法とPyTorchを使う方法がある。
 
-## 未分類
+## 失敗1
 
 ### 失敗: Flash Attention 2
 
@@ -708,3 +708,10 @@ DeepSpeedというのを使うと学習が速くなるというのでインス�
 プレコンパイルの async\_io が別途必要らしい。
 そして async\_io はWindowsに未対応。
 DeepSpeedはmicrosoft製…
+
+## Fine-tune tutorials
+
+TODO: 読んで実践する
+
+* <https://huggingface.co/docs/transformers/ja/training>
+* <https://towardsdatascience.com/causallm-part-2-finetuning-a-model-3fdb4d9bd936>
