@@ -33,10 +33,13 @@ sshd (SSHデーモン)は動いていないので有効化し、起動する。
 jupyter lab等をリモートから使うのに、いくつかのポートを解放する。
 開けたのはとりあえず 3000, 8000, 8888 の3ポート。
 必要になったら(必要なくなったら)順次足すか減らすか。
+設定は /etc/firewalld/zones/public.xml に書き込まれる。
 
-    sudo firewall-cmd --add-port=3000/tcp
-    sudo firewall-cmd --add-port=8000/tcp
-    sudo firewall-cmd --add-port=8888/tcp
+    sudo firewall-cmd --permanent --add-port=3000/tcp
+    sudo firewall-cmd --permanent --add-port=8000/tcp
+    sudo firewall-cmd --permanent --add-port=8080/tcp
+    sudo firewall-cmd --permanent --add-port=8888/tcp
+    sudo firewall-cmd --reload
 
 カメラ画像や音声をユーザーで扱えるようにするため、audio, render, video グループに自身を追加
 
@@ -65,7 +68,6 @@ lightdm-gtk-greeterがスクリーンセーバーに入ってしまったこと�
 
 * PSP = Platform Security Processor (PSP) DRM関連っぽい?
 * VCN = Video Core Next 動画のハードウェアエンコーダー?
-
 
 ```
 $ sudo dmesg | grep amdgpu
@@ -142,3 +144,29 @@ $ cat /sys/module/amdgpu/parameters/runpm
 -1
 ```
 
+カーネル起動引数にモジュールパラメータを足すことで対応した。
+/etc/default/grub の `GRUB_CMDLINE_LINUX` に `amdgpu.runpm=0` を追加した後、
+`grub2-mkconfig -o /boot/grub2/grub.cfg` で反映。
+
+再起動すると `runpm` が 0 になり suspend しなくなり、問題が発生しなくなった。
+
+## llama.cpp (with hipBLAS) のビルド
+
+llama.cpp のビルドは以下の通り、何の問題も発生せずに完了した。
+インストールしたパッケージはミニマルではない可能性がある。
+
+```console
+$ sudo dnf -y install hipblas-devel rocm-hip-devel rocblas-devel
+
+$ git clone https://github.com/ggerganov/llama.cpp.git
+
+$ cd llama.cpp
+$ make -j 8 GGML_HIPBLAS=1
+```
+
+インストールは実行ファイルをコピーするだけに留めた。
+
+```console
+# mkdir -p /opt/llama.cpp/bin
+# cp llama-* /opt/llama.cpp/bin
+```
