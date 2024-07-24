@@ -170,3 +170,16 @@ $ make -j 8 GGML_HIPBLAS=1
 # mkdir -p /opt/llama.cpp/bin
 # cp llama-* /opt/llama.cpp/bin
 ```
+
+## フォントのインストール
+
+[miiton/Cica](https://github.com/miiton/Cica) を <https://docs.fedoraproject.org/en-US/quick-docs/fonts/#unpackaged>
+の手順に従って /usr/local/share/fonts/Cica へインストール。
+
+## Fcitx5 + Mozc のインストール
+
+参考: <https://fedoraproject.org/wiki/I18N/Fcitx5>
+
+```console
+$ sudo dnf -y install mozc fcitx5-mozc fcitx5-autostart fcitx5-configtool
+```
