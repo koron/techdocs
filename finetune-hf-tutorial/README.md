@@ -29,6 +29,9 @@ paligemmaの例は前者で、LoRA始めアダプターと呼ばれるものは�
 ## わかってないことば
 
 * attention とは? (transformerの文脈に限定したほうが良いかも)
+
+    * [【文系でもわかる】ChatGPTのキモ「Transformer」「Attention」のしくみ](https://www.sbbit.jp/article/cont1/114721)
+
 * transformer における q\_proj などの層名(モジュール名?)の名前付けと、違い
 * LoRAのパラメーターの意味
 * QLoRAってなんだ?
