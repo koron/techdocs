@@ -1,3 +1,5 @@
+# KoRoN's Technical Documents
+
 ## Index
 
 Title                                                           |Date       |Status
@@ -30,3 +32,11 @@ Title                                                           |Date       |Sta
 [CyberAgnetのLVM: llava-calm2-siglip](./llava-calm2-siglip)     |2024-06-20 |WIP
 [Finetune HF チュートリアル](./finetune-hf-tutorial)            |2024-07-17 |WIP
 [Fedora再導入記](./fedora-reintroduction)                       |2024-07-19 |WIP
+
+## Future topics
+
+* about BLAS
+* Transformer, Attention, LLaMA, blocks structure
+    * https://toukei-lab.com/transformer
+    * https://toukei-lab.com/llama
+* Mistral Nemo
