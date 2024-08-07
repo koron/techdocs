@@ -17,6 +17,10 @@
 
     [PEFTのノート](./finetune-peft.ipynb)
 
+* LoRAで学習してみる (いまのところ学習には失敗している)
+
+    [lora-training.ipynb](./lora-trainging.ipynb)
+
 
 ## Finetune について考えを更新
 
@@ -32,8 +36,34 @@ paligemmaの例は前者で、LoRA始めアダプターと呼ばれるものは�
 
     * [【文系でもわかる】ChatGPTのキモ「Transformer」「Attention」のしくみ](https://www.sbbit.jp/article/cont1/114721)
 
+    現時点の理解: 文章をトークン化したトークンシーケンスに対して、ここのトークン≒単語が重要だよという重みを付けて学習・推論すること
+
 * transformer における q\_proj などの層名(モジュール名?)の名前付けと、違い
-* LoRAのパラメーターの意味
+
+    例として [google/gemma-2-2b-it](https://huggingface.co/google/gemma-2-2b-it/tree/main) に見られるレイヤーの構造は以下の通り。
+    q, k v, o は transformer 用語の Query, Key, Value, Output といったところか?
+
+    ```
+    input_layernorm
+    mlp.down_proj
+    mlp.gate_proj
+    mlp.up_proj
+    post_attention_layernorm
+    post_feedforward_layernorm
+    pre_feedforward_layernorm
+    self_attn.k_proj
+    self_attn.o_proj
+    self_attn.q_proj
+    self_attn.v_proj
+    ```
+
+    * [Python(PyTorch)で自作して理解するTransformer](https://zenn.dev/yukiyada/articles/59f3b820c52571)
+
+    名前等からおおよその対応はわかるが、 transformer の構造をしっかり押さえないとこの先は踏み入れられなさそう。
+
+* LoRAの(ハイパー)パラメーターの意味
+
+    * [【ローカルLLM】QLoRAの複雑なパラメータを（少しでも）整理する](https://note.com/bakushu/n/ne7760c47e39e)
 * QLoRAってなんだ?
 
     量子化したLoRAのこと。
