@@ -32,7 +32,7 @@ Title                                                           |Date       |Sta
 [CyberAgnetのLVM: llava-calm2-siglip](./llava-calm2-siglip)     |2024-06-20 |Done
 [Finetune HF チュートリアル](./finetune-hf-tutorial)            |2024-07-17 |WIP
 [Fedora再導入記](./fedora-reintroduction)                       |2024-07-19 |WIP
-[RP2350の調査](./rp2350-investigation)	                        |2024-08-09 |WIP
+[RP2350の調査](./rp2350-investigation)	                        |2024-08-09 |Done
 
 ## Future topics
 
