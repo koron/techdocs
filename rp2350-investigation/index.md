@@ -182,3 +182,45 @@ USBを12Mbpsで動かすにはインピーダンスを90Ω近辺にする必要�
 いずれにせよUSB FSは動くかもしれないが、USB標準に準拠することはない。
 
 ## from Datasheet
+
+コアにAHB5があり、AHB5からAPBに繋がってる。
+(2.1. Bus Fabric)
+
+AHB5とAPBはARMが定めるバス規格
+
+* AHB5 = Advanced High-Performance Bus 5
+* APB = Advanced Peripheral Bus
+
+SIO (Single-cycle IO subsystem) がセキュアと非セキュアで二重化されてる。
+(3.1.1. Secure and Non-secure SIO)
+
+RP2350ではCortex-M33 に幾つかのコプロセッサ(拡張)が追加されている。
+コプロセッサは1サイクルごとに64ビットを転送できる、
+プロセッサに密結合されたモジュールのこと。
+(3.6. Cortex-M33 Coprocessors)
+
+* GPIOコプロセッサ(GPIOC) GPIOの高速な読み書きができる
+* DCP 倍精度浮動小数点演算 (Cのdouble)
+* RCP 冗長コプロセッサ - セキュリティのためのもの
+* FPU 浮動小数点ユニット (Cのfloat)
+
+Core 0 をARM、Core 1 をRISC-Vのような混合アーキテクチャも、可能ではある。
+(3.9.2. Mixed Archtecture Combinations)
+
+ブートROMが使う専用のブートRAMがある。
+通常のRAMより遅く、またブートRAMからの命令実行はできない。
+
+8KBの一度だけ書き込み可能なストレージがある。
+ストレージは初期値で0で、1度だけ1に変更できる。
+(16ビット+8ビット) x 4096 の合計8KBになる。
+データは16ビット、パリティに8ビット。
+デバッグ無効化などの幾つかの重要なフラグがそこに含まれる。
+(4.5. OTP)
+
+UARTでプログラムを流し込む方法が増えてる。
+QSPIが新たなUARTの口になってそこでブートシェルが動くらしい。
+(5.8. UART Boot)
+
+(感想)
+セキュアモードやOTPによるハックの禁止など、ガチで量産最終製品への組み込みを目指した感じ。
+一方でVREG回りの回路の難しさを考えると、そんなんでええのか? ってなる。
