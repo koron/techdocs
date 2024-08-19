@@ -143,45 +143,25 @@ UC13         |
 UC14         |
 UC15         |
 
-### pacman (MSYS2, Windows)
-
-ユースケース | コマンド
-:-----------:|--------------------------------------------------------------
-UC01         |
-UC02         |
-UC03         |
-UC04         |
-UC05         |
-UC06         |
-UC07         |
-UC08         |
-UC09         |
-UC10         |
-UC11         |
-UC12         |
-UC13         |
-UC14         |
-UC15         |
-
 ### apt (Ubuntu, Debian)
 
 ユースケース | コマンド
 :-----------:|--------------------------------------------------------------
-UC01         |
-UC02         |
-UC03         |
-UC04         |
-UC05         |
-UC06         |
-UC07         |
-UC08         |
-UC09         |
-UC10         |
-UC11         |
-UC12         |
-UC13         |
-UC14         |
-UC15         |
+UC01         | `apt install {pkgname}`
+UC02         | `apt remove {pkgname}` <br> `apt purge {pkgname}`
+UC03         | `apt autoremove`
+UC04         | `apt upgrade`
+UC05         | `apt update`
+UC06         | `apt list` <br> `LANG=C apt list | grep -v installed`
+UC07         | `apt show {pkgname}`
+UC08         | `apt depends {pkgname}`
+UC09         | `apt list --installed` <br> `apt-mark showauto` <br> `apt-mark showmanual`
+UC10         | `apt show {pkgname}`
+UC11         | `dpkg -L {pkgname}`
+UC12         | `dpkg -S {/path/to/file}`
+UC13         | `apt depends {pkgname}`
+UC14         | `apt rdepends {pkgname}`
+UC15         | `apt-mark manual {pkgname}` <br> `apt-mark auto {pkgname}`
 
 ### dnf (Fedora)
 
