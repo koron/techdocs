@@ -112,9 +112,9 @@ UC02         | `portmaster -de {pkgname}` <br> `pkg delete {pkgname}`
 UC03         | `portmaster -ds` <br> `pkg autoremove`
 UC04         | `portmaster -da` <br> `pkg upgrade`
 UC05         | `make -C /usr/ports update fetchindex` <br> `pkg update -f`
-UC06         | `awk -F\| '{ print $2 }' /usr/ports/INDEX-14` <br> `pkg search '.*'` <br> `pkg rquery -a '%o'`
+UC06         | `awk -F\\| '{ print $2 }' /usr/ports/INDEX-14` <br> `pkg search '.*'` <br> `pkg rquery -a '%o'`
 UC07         | `pkg search {pkgname}` <br> `pkg rquery '%o' {pkgname}`
-UC08         | `awk -F\| ' $1~/^{name}-/ { print $9 }' INDEX-14` <br> `pkg rquery %do {pkgname}`
+UC08         | `awk -F\\| ' $1~/^{name}-/ { print $9 }' INDEX-14` <br> `pkg rquery %do {pkgname}`
 UC09         | `portmaster -l` <br> `pkg info` <br> `pkg query -e '%a = 0' '%n-%v` <br> `pkg query -e '%a = 1' '%n-%v'`
 UC10         | `pkg info {pkgname}`
 UC11         | `pkg info -l {pkgname}`
