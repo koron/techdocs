@@ -33,6 +33,7 @@ Title                                                           |Date       |Sta
 [Finetune HF チュートリアル](./finetune-hf-tutorial)            |2024-07-17 |WIP
 [Fedora再導入記](./fedora-reintroduction)                       |2024-07-19 |WIP
 [RP2350の調査](./rp2350-investigation)	                        |2024-08-09 |Done
+[パッケージマネージャへの要件](./package-manager-requirements)  |2024-08-19 |WIP
 
 ## Future topics
 
