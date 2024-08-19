@@ -152,7 +152,7 @@ UC02         | `apt remove {pkgname}` <br> `apt purge {pkgname}`
 UC03         | `apt autoremove`
 UC04         | `apt upgrade`
 UC05         | `apt update`
-UC06         | `apt list` <br> `LANG=C apt list | grep -v installed`
+UC06         | `apt list` <br> `LANG=C apt list \| grep -v installed`
 UC07         | `apt show {pkgname}`
 UC08         | `apt depends {pkgname}`
 UC09         | `apt list --installed` <br> `apt-mark showauto` <br> `apt-mark showmanual`
