@@ -94,10 +94,131 @@
 
 ### FreeBSD pkg and ports (portmaster)
 
+FreeBSDは他と比べると独特のパッケージシステムを持っている。
+`pkg` はコンパイル済みバイナリを管理するパッケージマネージャー。
+ports (正確にはコマンドではなく `make` を使ったシステム) はソースからのビルドを管理するツール。
+portsは `make` で依存関係を含めてバイナリパッケージを作成して `pkg` でインストールする。
+そのため切っても切り離せない。
+また ports は `portmaster` 等のラッパーコマンドで便利に扱えるようになっている。
+
+以下の表中の `{pkgname}` は `{category}/{name}` でも良いのだが、`{name}-{version}` 方式のパッケージ名やそのグロブ等の部分一致でも指定できる。場合によっては追加のオプションが必要になる。
+
+レポジトリとして ports と pkg の2系統あるので、バージョン等が多少食い違うことがあることに注意が必要。
+
+ユースケース | コマンド
+:-----------:|--------------------------------------------------------------
+UC01         | `portmaster -d {category}/{name}` <br> `pkg install {category}/{name}` <br> `make -C /usr/ports/{category}/{name} install`
+UC02         | `portmaster -de {pkgname}` <br> `pkg delete {pkgname}`
+UC03         | `portmaster -ds` <br> `pkg autoremove`
+UC04         | `portmaster -da` <br> `pkg upgrade`
+UC05         | `make -C /usr/ports update fetchindex` <br> `pkg update -f`
+UC06         | `awk -F\| '{ print $2 }' /usr/ports/INDEX-14` <br> `pkg search '.*'` <br> `pkg rquery -a '%o'`
+UC07         | `pkg search {pkgname}` <br> `pkg rquery '%o' {pkgname}`
+UC08         | `awk -F\| ' $1~/^{name}-/ { print $9 }' INDEX-14` <br> `pkg rquery %do {pkgname}`
+UC09         | `portmaster -l` <br> `pkg info` <br> `pkg query -e '%a = 0' '%n-%v` <br> `pkg query -e '%a = 1' '%n-%v'`
+UC10         | `pkg info {pkgname}`
+UC11         | `pkg info -l {pkgname}`
+UC12         | `pkg which {/path/to/file}`
+UC13         | `pkg info -d {pkgname}`
+UC14         | `pkg info -r {pkgname}`
+UC15         | `pkg set -A 0 {pkgname}` <br> `pkg set -A 1 {pkgname}`
+
 ### pacman (MSYS2, Windows)
+
+ユースケース | コマンド
+:-----------:|--------------------------------------------------------------
+UC01         |
+UC02         |
+UC03         |
+UC04         |
+UC05         |
+UC06         |
+UC07         |
+UC08         |
+UC09         |
+UC10         |
+UC11         |
+UC12         |
+UC13         |
+UC14         |
+UC15         |
+
+### pacman (MSYS2, Windows)
+
+ユースケース | コマンド
+:-----------:|--------------------------------------------------------------
+UC01         |
+UC02         |
+UC03         |
+UC04         |
+UC05         |
+UC06         |
+UC07         |
+UC08         |
+UC09         |
+UC10         |
+UC11         |
+UC12         |
+UC13         |
+UC14         |
+UC15         |
 
 ### apt (Ubuntu, Debian)
 
+ユースケース | コマンド
+:-----------:|--------------------------------------------------------------
+UC01         |
+UC02         |
+UC03         |
+UC04         |
+UC05         |
+UC06         |
+UC07         |
+UC08         |
+UC09         |
+UC10         |
+UC11         |
+UC12         |
+UC13         |
+UC14         |
+UC15         |
+
 ### dnf (Fedora)
 
+ユースケース | コマンド
+:-----------:|--------------------------------------------------------------
+UC01         |
+UC02         |
+UC03         |
+UC04         |
+UC05         |
+UC06         |
+UC07         |
+UC08         |
+UC09         |
+UC10         |
+UC11         |
+UC12         |
+UC13         |
+UC14         |
+UC15         |
+
 ### (OPTION) winget
+
+ユースケース | コマンド
+:-----------:|--------------------------------------------------------------
+UC01         |
+UC02         |
+UC03         |
+UC04         |
+UC05         |
+UC06         |
+UC07         |
+UC08         |
+UC09         |
+UC10         |
+UC11         |
+UC12         |
+UC13         |
+UC14         |
+UC15         |
