@@ -167,21 +167,21 @@ UC15         | `apt-mark manual {pkgname}` <br> `apt-mark auto {pkgname}`
 
 ユースケース | コマンド
 :-----------:|--------------------------------------------------------------
-UC01         |
-UC02         |
-UC03         |
-UC04         |
-UC05         |
-UC06         |
-UC07         |
-UC08         |
-UC09         |
-UC10         |
-UC11         |
-UC12         |
-UC13         |
-UC14         |
-UC15         |
+UC01         | `dnf install {pkgname}`
+UC02         | `dnf remove {pkgname}`
+UC03         | `dnf autoremove`
+UC04         | `dnf upgrade`
+UC05         | `dnf --refresh upgrade`
+UC06         | `dnf list --available [pattern]`
+UC07         | `dnf info [--available] {pkgname}`
+UC08         | `dnf repoquery --requires {pkgname}`
+UC09         | `dnf list --installed` <br> `dnf repoquery --userinstalled` <br> `dnf repoquery --installed --qf='%{name}-%{evr}.%{arch} (%{reason})' \| grep -v '(user)'`
+UC10         | `dnf info [--installed] {pkgname}`
+UC11         | `dnf repoquery [--installed] -l {pkgname}`
+UC12         | `dnf repoquery [--installed] -f {/path/to/file}`
+UC13         | `dnf repoquery --requires {pkgname}`
+UC14         | `dnf repoquery --whatrequires {pkgname} --installed`
+UC15         | `dnf mark install {pkgname}` <br> `dnf mark remove {pkgname}`
 
 ### (OPTION) winget
 
