@@ -127,21 +127,21 @@ UC15         | `pkg set -A 0 {pkgname}` <br> `pkg set -A 1 {pkgname}`
 
 ユースケース | コマンド
 :-----------:|--------------------------------------------------------------
-UC01         |
-UC02         |
-UC03         |
-UC04         |
-UC05         |
-UC06         |
-UC07         |
-UC08         |
-UC09         |
-UC10         |
-UC11         |
-UC12         |
-UC13         |
-UC14         |
-UC15         |
+UC01         | `pacman -S {pkgname}`
+UC02         | `pacman -R {pkgname}`
+UC03         | `pacman -Qtdq | pacman -Rs -` <br> `pacman -Sc`
+UC04         | `pacman -Su` <br> `pacman -Syu`
+UC05         | `pacman -Sy`
+UC06         | `pacman -Ss {regex}`
+UC07         | `pacman -Si {pkgname}`
+UC08         | `pacman -Si {pkgname}`
+UC09         | `pacman -Q` <br> `pacman -Qs {regex}` <br> `pacman -Qe` <br> `pacman -Qd`
+UC10         | `pacman -Qi {pkgname}`
+UC11         | `pacman -Ql {pkgname}`
+UC12         | `pacman -F {/path/to/file}`
+UC13         | `pactree {pkgname}`
+UC14         | `pactree -r [-d {n}] {pkgname}`
+UC15         | `pacman -D --asexplicit {pkgname}` <br> `pacman -D --asdeps {pkgname}`
 
 ### apt (Ubuntu, Debian)
 
