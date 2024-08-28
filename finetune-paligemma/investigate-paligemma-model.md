@@ -2,18 +2,18 @@
 
 以下を検証する
 
-* 他のLLMに比べて層数が少ないのでは?
-* PaliGemmaの層の構造はどうなってる?
-* finetuneに使ったアテンションって実際はどのあたり?
-* imageレイヤーはVision Transformerなの?
-* SigLIP, CLIP の位置付けは?
+* [x] 他のLLMに比べて層数が少ないのでは?
+* [x] PaliGemmaの層の構造はどうなってる?
+* [x] imageレイヤーはVision Transformerなの?
+* [ ] finetuneに使ったアテンションって実際はどのあたり?
+* [ ] SigLIP, CLIP の位置付けは?
 
 ## 他のLLMに比べて層数が少ないのでは?
 
 [実験ノート2](https://github.com/koron/techdocs/blob/main/finetune-paligemma/02_finetune_2nd.ipynb) を見ると層数はわずかに32。
 
 <details>
-<summary></summary>
+<summary>全層の情報</summary>
 
 ```
 img/Transformer/encoder_norm/bias                                                (1152,)                float16
