@@ -88,24 +88,28 @@ RP2040用のはビルドしてインストールしていたが、新たにRP235
     *   `PICO_PLATFORM=rp2350` を定義することでビルドターゲットをRP2350にする
     *   ビルドにはmsysのmakeを使う
 
+    以上のことを考慮してビルドファイルの生成コマンドは以下のようにする。
+
         $ cmake -B ./build/rp2350 -DPICO_PLATFORM=rp2350 -G "MSYS Makefiles"
 
-    Ninjaを使う場合は以下のようにする。
+    MSYS Makefiles ではなく Ninja を使う場合は以下のようにする。
+    Ninja のほうが並列にビルドが進み、速い。
 
         $ cmake -B ./build/ninja-rp2350 -DPICO_PLATFORM=rp2350
 
 4. ビルドする
 
     ビルドにMSYS Makefilesを使う場合、サブディレクトリだけをコンパイルするには以下のようにする。
+    ディレクトリを指定することで特定のプログラムだけをコンパイルする。
 
         $ cmake --build ./build/rp2350/hello_world/serial
 
-    ビルドにNinjaを使う場合は `-t` でターゲットを追加していする。
+    ビルドにNinjaを使っている場合は `-t` でターゲット指定を追加することで、特定のプログラムだけをコンパイルできる。
 
         $ cmake --build ./build/ninja-rp2350 -t hello_world/serial/all
 
-    ディレクトリを指定することで特定のプログラムだけをコンパイルする。
-    出力ファイルは `build/rp2350/hello_world/serial/hello_serial.uf2`
+    出力ファイルは `build/rp2350/hello_world/serial/hello_serial.uf2` となる。
+    `file` コマンドや `picotool` コマンドで中身を確認できる。
 
         $ file build/rp2350/hello_world/serial/hello_serial.uf2
         build/rp2350/hello_world/serial/hello_serial.uf2: UF2 firmware image, family 0xe48bff57, address 0x10ffff00, 2 total blocks
@@ -135,7 +139,7 @@ RP2040用のはビルドしてインストールしていたが、新たにRP235
 
 5. 実機にインストールする
 
-    自分の環境はEドライブにPico 2デバイスがマッピングされているので、
+    自分の環境ではEドライブにPico 2デバイスがマッピングされているので、
     インストール(≒ただのコピー)のコマンドは以下のようになる。
 
         $ cp build/rp2350/hello_world/serial/hello_serial.uf2 /e/
