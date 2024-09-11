@@ -5,7 +5,7 @@
 * [x] 他のLLMに比べて層数が少ないのでは?
 * [x] PaliGemmaの層の構造はどうなってる?
 * [x] imageレイヤーはVision Transformerなの?
-* [ ] finetuneに使ったアテンションって実際はどのあたり?
+* [x] finetuneに使ったアテンションって実際はどのあたり?
 * [ ] SigLIP, CLIP の位置付けは?
 
 ## 他のLLMに比べて層数が少ないのでは?
@@ -112,3 +112,29 @@ LLMでトークン化しテキストに戻す。
 ## imageレイヤーはVision Transformerなの?
 
 [ココ](https://github.com/google-research/big_vision/blob/46b2456f54b9d4f829d1925b78943372b376153d/big_vision/models/proj/paligemma/paligemma.py#L277) に `vit` の表示があるので Vision Transformer である可能性が高い。
+
+## finetuneに使ったアテンションって実際はどのあたり?
+
+この3つのレイヤ。ただし高次テンソルでマルチヘッドを表現していることに注意。
+
+```
+llm/layers/attn/attn_vec_einsum/w                                                (18, 8, 256, 2048)     float32
+llm/layers/attn/kv_einsum/w                                                      (18, 2, 1, 2048, 256)  float32
+llm/layers/attn/q_einsum/w                                                       (18, 8, 2048, 256)     float32
+```
+
+## SigLIP, CLIP の位置付けは?
+
+### CLIPとは?
+
+*   by Open AI
+*   ゼロショット学習
+*   画像から類似との高いテキストを選択する
+*   ゼロショット転移性 (訓練データがない分布への対応)
+
+参考文献
+
+* <https://cdn.openai.com/papers/Learning_Transferable_Visual_Models_From_Natural_Language_Supervision.pdf>
+* <https://techblog.exawizards.com/entry/2023/05/10/055218>
+* <https://data-analytics.fun/2021/03/24/understanding-openai-clip/>
+* <https://trail.t.u-tokyo.ac.jp/ja/blog/22-12-02-clip/>

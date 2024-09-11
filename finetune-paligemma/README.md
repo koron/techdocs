@@ -48,7 +48,7 @@ MSYS2 の bash 上で作業
 `--shm-size=12g` でGPU側と大きなデータのやり取りをできるように。
 
 ```console
-$ docker --gpus all run --shm-size=12g --rm -it -p 8888:8888 ghcr.io/nvidia/jax:gemma
+$ docker run --rm -it -p 8888:8888 --gpus all --shm-size=12g ghcr.io/nvidia/jax:gemma
 ```
 
 
