@@ -235,7 +235,7 @@ Result: ./dataset/data_valid.jsonl
 
     データファイルや実行スクリプトを置く
 
-    * [playground/dataset/] 画像ファイルおよびそのメタデータ(JSONL)を置く
+    * [playground/dataset/](./playground/dataset/) 画像ファイルおよびそのメタデータ(JSONL)を置く
     * playground/dataset/data.jsonl 入力画像のメタデータなJSONL
         
         内容は以下のようになる。
@@ -254,15 +254,15 @@ Result: ./dataset/data_valid.jsonl
 
     以下は実行スクリプト。Dockerコンテナ内で実行する必要がある
 
-    * [playground/01-download_models.py] Paligemmnaのモデルとトークナイザーのモデルをダウンロードする。
+    * [playground/01-download_models.py](./playground/01-download_models.py) Paligemmnaのモデルとトークナイザーのモデルをダウンロードする。
 
         予めkaggleのアカウント情報をローカルの [~/.kaggle/kaggle.json](https://www.kaggle.com/docs/api#authentication) に保存しておく必要がある。
 
-    * [playground/02-shuffle_data.sh] dataset/data.jsonl をシャッフルし学習用と検証用のセットに分け、1回の学習に利用できる形に成形する。
+    * [playground/02-shuffle_data.sh](./playground/02-shuffle_data.sh) dataset/data.jsonl をシャッフルし学習用と検証用のセットに分け、1回の学習に利用できる形に成形する。
 
-    * [playground/03-do_learn.py] 学習を実行し、結果を評価する。オプションで学習後のモデルを保存できる。
+    * [playground/03-do_learn.py](./playground/03-do_learn.py) 学習を実行し、結果を評価する。オプションで学習後のモデルを保存できる。
 
-    * [playground/04-validate.py] 1つのモデルに対して、複数のデータセットを1度に検証できる。
+    * [playground/04-validate.py](./playground/04-validate.py) 1つのモデルに対して、複数のデータセットを1度に検証できる。
 
 ## 再現
 
