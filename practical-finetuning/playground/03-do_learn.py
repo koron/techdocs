@@ -1,6 +1,25 @@
 #!/usr/bin/python
 #
 # 学習してパラメーターを保存するスクリプト
+#
+# USAGE: ./03-do_learn.py -d {dataset name} -w {model name to write}
+#
+# Options:
+#
+# -d    入力に使うデータセット名を指定する。
+#       データセット名は ./dataset/{セット名}/ に展開され
+#       そこから train.jsonl と valid.jsonl が利用される
+#
+# -w    学習後のモデルを保存する場合に指定する
+#       ./checkpoints/{保存名}.npz で学習後のモデルが保存される
+#
+# -2    1回目の学習に続けてて2回目の学習を実行する場合に指定する
+#       学習率は1回目よりも下げて設定される
+#
+# -m    学習前のモデルを指定する
+#       デフォルトは /root/.cache 下にある事前学習済みのもの
+#       ./checkpoints/trained-20241111.npz のようにfinetune済みのものを指定し
+#       更なる追加学習を行える
 
 from sys import argv
 import os
@@ -14,9 +33,6 @@ TOKENIZER_PATH = "/root/.cache/paligemma_tokenizer.model"
 
 DATA_DIR = "dataset"
 DATA_SET = "set1"
-DATA_TRAINNG = os.path.join(DATA_DIR, DATA_SET, "train.jsonl")
-DATA_VALIDATION = os.path.join(DATA_DIR, DATA_SET, "valid.jsonl")
-DATA_WHOLE = os.path.join(DATA_DIR, "data.jsonl")
 
 IMAGE_ROOT = DATA_DIR
 
@@ -26,8 +42,47 @@ TRAIN_EXAMPLES = 512
 
 SECOND_TRAINING = False
 
+SAVE_CHECKPOINT = False
+MODEL_OUTPUT = "./checkpoints/out.npz"
+
 SEQLEN = 128
 
+
+# Configure by options
+
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-m", "--model", help='model to input')
+parser.add_argument("-d", "--dataset", help='dataset name (default: set1)')
+parser.add_argument("-p", "--prompt", help='override prompt')
+parser.add_argument("-w", "--write-model", help='write model after training with this name in checkpoints (w/o .npz')
+parser.add_argument("-2", "--second-training", action='store_true', help='do second training')
+
+for key, value in vars(parser.parse_args(argv[1:])).items():
+    match key:
+        case "model":
+            if value is not None:
+                MODEL_PATH = value
+        case "dataset":
+            if value is not None:
+                DATA_SET = value
+        case "prompt":
+            if value is not None:
+                PROMPT = prompt
+        case "write_model":
+            if value is not None:
+                MODEL_OUTPUT = os.path.join(".", "checkpoints", value + ".npz")
+                SAVE_CHECKPOINT = True
+        case "second_training":
+            if value is True:
+                SECOND_TRAINING = True
+
+# Determine parameters
+
+DATA_TRAINNG = os.path.join(DATA_DIR, DATA_SET, "train.jsonl")
+DATA_VALIDATION = os.path.join(DATA_DIR, DATA_SET, "valid.jsonl")
+DATA_WHOLE = os.path.join(DATA_DIR, "data.jsonl")
 
 # Load tokenizer
 import sentencepiece
@@ -372,3 +427,8 @@ if SECOND_TRAINING:
             print(f"  step: {step:2d}/{TRAIN_STEPS:2d}   lr: {learning_rate:.5f}   loss: {loss:.4f}")
 
     validate_model("2nd trained")
+
+if SAVE_CHECKPOINT:
+    flat, _ = big_vision.utils.tree_flatten_with_names(params)
+    with open(MODEL_OUTPUT, "wb") as f:
+        np.savez(f, **{k: v for k, v in flat})

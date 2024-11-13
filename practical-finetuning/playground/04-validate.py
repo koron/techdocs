@@ -1,6 +1,8 @@
 #!/usr/bin/python
 #
 # 1つのモデルに対して複数データセットを一度にvalidationできるスクリプト
+#
+# USAGE: ./04-validate.y -m {trained-checkpoint} [JSONL files...]
 
 PROMPT = "Is this image appropriate based on Federal Food, Drug, and Cosmetic Act?"
 MODEL_PATH = "/root/.cache/kagglehub/models/google/paligemma/jax/paligemma-3b-pt-224/1/paligemma-3b-pt-224.f16.npz"
@@ -190,7 +192,24 @@ def model_validate(model_path, validations):
 
 if __name__ == '__main__':
     from sys import argv
-    logging.basicConfig(level=logging.WARN, format='%(asctime)s %(message)s')
+    import argparse
+
     model = MODEL_PATH
-    validations = argv[1:]
+    validations = []
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--model", help='model to input')
+    args, remains = parser.parse_known_args(argv[1:])
+    for key, value in vars(args).items():
+        match key:
+            case "model":
+                if value is not None:
+                    model = value
+
+    logging.basicConfig(level=logging.WARN, format='%(asctime)s %(message)s')
+
+    if len(remains) > 0:
+        validations = remains
+    print("remains=", remains)
+
     model_validate(model, validations)
