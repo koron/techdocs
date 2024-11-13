@@ -271,6 +271,7 @@ Result: ./dataset/data_valid.jsonl
 ### 事前準備
 
 * GPUにアクセスできる形でdockerdを実行し、アクセスできるユーザーを用意する。Windowsの場合はDocker Desktopで良い。
+* 本ディレクトリをコピーする
 * playground/dataset にサンプルデータ data.jsonl と画像ファイルを配置する
 
 ### 再現手順
