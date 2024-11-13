@@ -1,4 +1,6 @@
 #!/bin/sh
+#
+# Paligemmaでfinetune実験を行うためのdockerイメージをビルドする
 
 set -eu
 

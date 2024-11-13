@@ -1,4 +1,10 @@
 #!/bin/sh
+#
+# Paligemmaでfinetune実験を行うためのコンテナを起動する
+#
+# モデルをダウンロードするにはローカル側の ~/.kaggle/kaggle.json に
+# kaggleの鍵情報(usernameとkey)が必要
+#
 
 set -eu
 
@@ -15,10 +21,7 @@ while getopts c:d:i:k:s: OPT ; do
     i) img="$OPTARG" ;;
     k) kaggle="$OPTARG" ;;
     r) shmsize="$OPTARG" ;;
-    *)
-      echo invalid option $OPT
-      exit 1
-      ;;
+    *) exit 1 ;;
   esac
 done
 
