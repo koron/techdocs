@@ -249,7 +249,7 @@ Result: ./dataset/data_valid.jsonl
         * `suffix` 要素は想定される結果。
         * `image` 要素は `playground/dataset` からの相対指定で、画像ファイルのパス。
 
-    * playground/dataset/iamges/ 画像ファイルの置き場
+    * playground/dataset/images/ 画像ファイルの置き場
     * [playground/checkpoints/](./playground/checkpoints) 事後学習済みのモデルの置き場
 
     以下は実行スクリプト。Dockerコンテナ内で実行する必要がある
@@ -289,7 +289,7 @@ Result: ./dataset/data_valid.jsonl
 2. Dockerコンテナを実行する
 
     ```console
-    $ ./bin/docker-build.sh
+    $ ./bin/docker-run.sh
     ```
 
     以後はDockerコンテナ内での操作になる。
