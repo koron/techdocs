@@ -250,27 +250,27 @@ sched_fn = big_vision.utils.create_learning_rate_schedule(
     decay_type="cosine", warmup_percent=0.10)
 
 for step in range(1, TRAIN_STEPS+1):
-  # Make list of N training examples.
-  examples = [next(train_data_it) for _ in range(BATCH_SIZE)]
+    # Make list of N training examples.
+    examples = [next(train_data_it) for _ in range(BATCH_SIZE)]
 
-  # Convert list of examples into a dict of np.arrays and load onto devices.
-  batch = jax.tree.map(lambda *x: np.stack(x), *examples)
-  batch = big_vision.utils.reshard(batch, data_sharding)
+    # Convert list of examples into a dict of np.arrays and load onto devices.
+    batch = jax.tree.map(lambda *x: np.stack(x), *examples)
+    batch = big_vision.utils.reshard(batch, data_sharding)
 
-  # Training step and report training loss
-  learning_rate = sched_fn(step)
-  params, loss = update_fn(params, batch, learning_rate)
+    # Training step and report training loss
+    learning_rate = sched_fn(step)
+    params, loss = update_fn(params, batch, learning_rate)
 
-  loss = jax.device_get(loss)
-  print(f"step: {step:2d}/{TRAIN_STEPS:2d}   lr: {learning_rate:.5f}   loss: {loss:.4f}")
+    loss = jax.device_get(loss)
+    print(f"step: {step:2d}/{TRAIN_STEPS:2d}   lr: {learning_rate:.5f}   loss: {loss:.4f}")
 
-  #if (step % EVAL_STEPS) == 0:
-  #  print(f"Model predictions at step {step}")
-  #  html_out = ""
-  #  for image, caption in make_predictions(
-  #      validation_data_iterator(), num_examples=10, batch_size=5):
-  #    html_out += render_example(image, caption)
-  #  display(HTML(html_out))
+    #if (step % EVAL_STEPS) == 0:
+    #  print(f"Model predictions at step {step}")
+    #  html_out = ""
+    #  for image, caption in make_predictions(
+    #      validation_data_iterator(), num_examples=10, batch_size=5):
+    #    html_out += render_example(image, caption)
+    #  display(HTML(html_out))
 
 flat, _ = big_vision.utils.tree_flatten_with_names(params)
 with open(MODEL_OUTPUT, "wb") as f:
