@@ -23,7 +23,7 @@ Web広告の画像が日本の法や条例に違反してないかどうかを�
 データそのものは現時点で非公開で、公開できるかは検討中。
 
 実行にはNVIDIAが用意しているjax:gemmaのdockerイメージ ([ghcr.io/nvidia/jax:gemma](https://github.com/nvidia/JAX-Toolbox/pkgs/container/jax)) を用いる。
-環境は Windows 11 Pro + Core i9 9900K + NVIDIA RTX 4070 (VRAM 12GB) + Docker Desktop 。
+環境は Windows 11 Pro + Core i9 9900K + NVIDIA RTX 4070 (VRAM 12GB) + MSYS2 shell + Docker Desktop 。
 VRAMが小さいためバッチ数を小さくせざるを得ず、学習が発散する確率が若干高くなっている。
 
 ### 戦略
@@ -110,8 +110,74 @@ FFDCAについての知識は一定量学習済みであることを仮定して
 それを日本の薬事法に適用できるように微調整する狙いがある。
 
 このプロンプトの変更により、学習前の評価値が改善している。
+プロンプト修正後かつ学習前の評価データは次の通り。
+Tp+Tnが微増したためaccuracyとprecisionは改善したが、
+Tpが減ったためにrecallは微減。
+F値は微々増といったところ。
 
-(TODO: データを引用)
+```
+# プロンプト修正後かつ学習前
+Result: dataset/data_shuffle.jsonl
+  tp=19 tn=41 fp=12 fn=24
+  accuracy:  0.625
+  precision: 0.6129032258064516
+  recall:    0.4418604651162791
+  F-measure: 0.5135135135135135
+
+# (比較用)プロンプト修正前かつ学習前
+Result:
+  tp=20 tn=38 fp=15 fn=23
+  accuracy:  0.6041666666666666
+  precision: 0.5714285714285714
+  recall:    0.46511627906976744
+  F-measure: 0.5128205128205128
+```
+
+9:1に分割して学習して trained2.npz を得ての評価データは以下の通り。
+
+```
+# プロンプト修正後かつ9:1で学習後
+Result: ./dataset/data_shuffle.jsonl
+  tp=39 tn=52 fp=1 fn=4
+  accuracy:  0.9479166666666666
+  precision: 0.975
+  recall:    0.9069767441860465
+  F-measure: 0.9397590361445783
+Result: ./dataset/data_train.jsonl
+  tp=31 tn=48 fp=0 fn=0
+  accuracy:  1.0
+  precision: 1.0
+  recall:    1.0
+  F-measure: 1.0
+Result: ./dataset/data_valid.jsonl
+  tp=4 tn=4 fp=1 fn=1
+  accuracy:  0.8
+  precision: 0.8
+  recall:    0.8
+  F-measure: 0.8000000000000002
+
+# (比較用)プロンプト修正前かつ9:1で学習後
+Result: ./dataset/data_shuffle.jsonl
+  tp=35 tn=51 fp=2 fn=8
+  accuracy:  0.8958333333333334
+  precision: 0.9459459459459459
+  recall:    0.813953488372093
+  F-measure: 0.875
+Result: ./dataset/data_train.jsonl
+  tp=31 tn=48 fp=0 fn=0
+  accuracy:  1.0
+  precision: 1.0
+  recall:    1.0
+  F-measure: 1.0
+Result: ./dataset/data_valid.jsonl
+  tp=3 tn=3 fp=2 fn=2
+  accuracy:  0.6
+  precision: 0.6
+  recall:    0.6
+  F-measure: 0.6
+```
+
+いずれもプロンプト修正後のほうが若干ながら評価が良い。
 
 ### 評価基準
 
@@ -149,22 +215,172 @@ FFDCAについての知識は一定量学習済みであることを仮定して
 ワークエリア(VRAM)を小さいまま
 バッチを大きくする技術を利用できる可能性がある。
 
-## コードと実データ
 
-### コード
+## ディレクトリとファイル
 
-実験に利用したコードの一部を以下に示す。
-実行に必要な全体ではないのに加えパラメタライズもしてないので、
-このままでは再現実験には使えない
+* [bin/](./bin) Docker環境を整えるためのスクリプト
 
-* (TODO: モデルとのパラメーターをダウンロードするスクリプト)
-* 学習+パラメーター保存: [learn0.py](./learn0.py)
-* パラメーター評価: [model\_validate2.py](./model_validate2.py)
-* 学習+評価(保存無し): [learn2+valid.py](./learn2+valid.py)
+    ホスト(ローカル側)で実行することを想定している。
+    Linuxや、Windows(+Docker Desktop)のMSYS2環境で、実行することを想定している。
 
-### データー
+    * [bin/docker-build.sh](./bin/docker-build.sh) 実験環境のコンテナイメージを作成するためのスクリプト
+    * [bin/docker-run.sh](./bin/docker-run.sh) 実行環境のコンテナを開始するためのスクリプト。必要なボリュームマウント等を行っている
 
-(TODO: データーを抜粋して掲載)
+* [cache/](./cache) コンテナ内でダウンロードしたモデルなどを保存・永続化しておく場所。dockerのvolumeでも良いのだが、今回はマウントした。
+* [Dockerfile](./Dockerfile) コンテナイメージの定義
+* [playground/](./playground) コンテナ内でのワークディレクトリ
+
+    データファイルや実行スクリプトを置く
+
+    * [playground/dataset/] 画像ファイルおよびそのメタデータ(JSONL)を置く
+    * playground/dataset/data.jsonl 入力画像のメタデータなJSONL
+        
+        内容は以下のようになる。
+
+        ```jsonl
+        {"prefix":"","suffix":"no","image":"images/NG_image101.jpg"}
+        {"prefix":"","suffix":"yes","image":"images/OK_image102.jpg"}
+        ```
+
+        * `prefix` 要素は空。
+        * `suffix` 要素は想定される結果。
+        * `image` 要素は `playground/dataset` からの相対指定で、画像ファイルのパス。
+
+    * playground/dataset/iamges/ 画像ファイルの置き場
+    * [playground/checkpoints/](./playground/checkpoints) 事後学習済みのモデルの置き場
+
+    以下は実行スクリプト。Dockerコンテナ内で実行する必要がある
+
+    * [playground/01-download_models.py] Paligemmnaのモデルとトークナイザーのモデルをダウンロードする。
+
+        予めkaggleのアカウント情報をローカルの [~/.kaggle/kaggle.json](https://www.kaggle.com/docs/api#authentication) に保存しておく必要がある。
+
+    * [playground/02-shuffle_data.sh] dataset/data.jsonl をシャッフルし学習用と検証用のセットに分け、1回の学習に利用できる形に成形する。
+
+    * [playground/03-do_learn.py] 学習を実行し、結果を評価する。オプションで学習後のモデルを保存できる。
+
+    * [playground/04-validate.py] 1つのモデルに対して、複数のデータセットを1度に検証できる。
+
+## 再現
+
+このドキュメントに書いた内容は以下の手順で再現できる。
+
+### 事前準備
+
+* GPUにアクセスできる形でdockerdを実行し、アクセスできるユーザーを用意する。Windowsの場合はDocker Desktopで良い。
+* playground/dataset にサンプルデータ data.jsonl と画像ファイルを配置する
+
+### 再現手順
+
+1. 実験用のDockerイメージを作成する(1回のみ)
+
+    ```console
+    $ ./bin/docker-build.sh
+    ```
+
+    初回は巨大(約10GB)なベースイメージをダウンロードするので、従量制ネットワークでやるべきではない。
+
+    簡単なシェルスクリプトなのでWindowsのコマンドラインに読み替えて実行しても良い。
+
+2. Dockerコンテナを実行する
+
+    ```console
+    $ ./bin/docker-build.sh
+    ```
+
+    以後はDockerコンテナ内での操作になる。
+    少し複雑に見えるけれども、どのような設定でコンテナを実行しているかは読み取れるだろう。
+
+3. モデルをダウンロードする(1回のみ)
+
+    ```console
+    $ ./01-download_models.py
+    ```
+
+4. 学習に使うデータセットを作成する(必要であれば複数回)
+
+    ```console
+    # 学習に使うデータセットを作成し dataset/set1/ に保存する。検証用データは10個
+    $ ./02-shuffle_data.sh -v 10 -n set1
+
+    # 学習に使うデータセットを作成し dataset/set2/ に保存する。検証用データは10個
+    $ ./02-shuffle_data.sh -v 10 -n set2
+
+    # 学習に使うデータセットを作成し dataset/set3/ に保存する。検証用データは20個
+    $ ./02-shuffle_data.sh -v 20 -n set3
+    ```
+
+5. 学習を実行する
+
+    ```console
+    # dataset/set1 を用いて学習し ./checkpoints/trained-set1.npz に保存する
+    $ ./03-do_learn.py -d set1 -w trained-set1
+
+    # dataset/set2 を用いて2回学習し ./checkpoints/trained-set2.npz に保存する
+    $ ./03-do_learn.py -d set2 -w trained-set2 -2
+    ```
+
+    学習の途中で出力の `loss` が1を超えて大きくなる場合、発散している疑いが濃厚なので中断し、再度学習をしたほうが良い。
+    以下は学習が成功している際の出力例:
+
+    ```
+    step: 32/256   lr: 0.02995   loss: 0.3417
+    step: 64/256   lr: 0.02804   loss: 0.3162
+    step: 96/256   lr: 0.02370   loss: 0.2927
+    step: 128/256   lr: 0.01774   loss: 0.2114
+    step: 160/256   lr: 0.01127   loss: 0.1467
+    step: 192/256   lr: 0.00549   loss: 0.4221
+    step: 224/256   lr: 0.00149   loss: 0.0181
+    step: 256/256   lr: 0.00000   loss: 0.0043
+    ```
+
+    以下は発散が疑われる失敗例であるので、中断して再学習めるべき。
+
+    ```
+    step: 32/256   lr: 0.02995   loss: 0.1789
+    step: 64/256   lr: 0.02804   loss: 1.4870
+    step: 96/256   lr: 0.02370   loss: 1.4092
+    step: 128/256   lr: 0.01774   loss: 1.1224
+    step: 160/256   lr: 0.01127   loss: 1.1452
+    step: 192/256   lr: 0.00549   loss: 1.1013
+    step: 224/256   lr: 0.00149   loss: 1.2169
+    ```
+
+    学習用データに対して各種評価値が1.0であれば、学習は収束したと言える。
+    以下はその出力例:
+
+    ```
+    Result: ./dataset/set1/train.jsonl (1st trained)
+      Tp=38 Tn=48 Fp=0 Fn=0
+      accuracy:  1.0
+      precision: 1.0
+      recall:    1.0
+      F-measure: 1.0
+    ```
+
+    一方でこれらの値が 1.0 に満たない場合は、収束に至ってないと考えられる。
+
+6. モデルを評価する
+
+    学習時に各評価値は計算されるが、以下のスクリプトを使うことで
+    学習を伴わずに再度計算できる。
+
+    ```console
+    # set1 で学習したモデルを set2 のデータで評価する
+    $ ./04-validate.py -m ./checkpoints/trained-set1.npz ./dataset/set2/train.jsonl ./dataset/set2/valid.jsonl
+    Result: dataset/set2/train.jsonl
+      Tp=34 Tn=48 Fp=1 Fn=3
+      accuracy:  0.9534883720930233
+      precision: 0.9714285714285714
+      recall:    0.918918918918919
+      F-measure: 0.9444444444444445
+    Result: ./dataset/set2/valid.jsonl
+      Tp=6 Tn=4 Fp=0 Fn=0
+      accuracy:  1.0
+      precision: 1.0
+      recall:    1.0
+      F-measure: 1.0
+    ```
 
 ## 課題
 
