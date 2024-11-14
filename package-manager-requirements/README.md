@@ -125,23 +125,7 @@ UC15         | `pkg set -A 0 {pkgname}` <br> `pkg set -A 1 {pkgname}`
 
 ### pacman (MSYS2, Windows)
 
-ユースケース | コマンド
-:-----------:|--------------------------------------------------------------
-UC01         | `pacman -S {pkgname}`
-UC02         | `pacman -R {pkgname}`
-UC03         | `pacman -Qtdq | pacman -Rs -` <br> `pacman -Sc`
-UC04         | `pacman -Su` <br> `pacman -Syu`
-UC05         | `pacman -Sy`
-UC06         | `pacman -Ss {regex}`
-UC07         | `pacman -Si {pkgname}`
-UC08         | `pacman -Si {pkgname}`
-UC09         | `pacman -Q` <br> `pacman -Qs {regex}` <br> `pacman -Qe` <br> `pacman -Qd`
-UC10         | `pacman -Qi {pkgname}`
-UC11         | `pacman -Ql {pkgname}`
-UC12         | `pacman -F {/path/to/file}`
-UC13         | `pactree {pkgname}`
-UC14         | `pactree -r [-d {n}] {pkgname}`
-UC15         | `pacman -D --asexplicit {pkgname}` <br> `pacman -D --asdeps {pkgname}`
+[pacman-msys2.md](./pacman-msys2.md) 参照
 
 ### apt (Ubuntu, Debian)
 
