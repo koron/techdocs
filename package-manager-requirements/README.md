@@ -105,23 +105,7 @@ portsは `make` で依存関係を含めてバイナリパッケージを作成�
 
 レポジトリとして ports と pkg の2系統あるので、バージョン等が多少食い違うことがあることに注意が必要。
 
-ユースケース | コマンド
-:-----------:|--------------------------------------------------------------
-UC01         | `portmaster -d {category}/{name}` <br> `pkg install {category}/{name}` <br> `make -C /usr/ports/{category}/{name} install`
-UC02         | `portmaster -de {pkgname}` <br> `pkg delete {pkgname}`
-UC03         | `portmaster -ds` <br> `pkg autoremove`
-UC04         | `portmaster -da` <br> `pkg upgrade`
-UC05         | `make -C /usr/ports update fetchindex` <br> `pkg update -f`
-UC06         | `awk -F\\| '{ print $2 }' /usr/ports/INDEX-14` <br> `pkg search '.*'` <br> `pkg rquery -a '%o'`
-UC07         | `pkg search {pkgname}` <br> `pkg rquery '%o' {pkgname}`
-UC08         | `awk -F\\| ' $1~/^{name}-/ { print $9 }' INDEX-14` <br> `pkg rquery %do {pkgname}`
-UC09         | `portmaster -l` <br> `pkg info` <br> `pkg query -e '%a = 0' '%n-%v` <br> `pkg query -e '%a = 1' '%n-%v'`
-UC10         | `pkg info {pkgname}`
-UC11         | `pkg info -l {pkgname}`
-UC12         | `pkg which {/path/to/file}`
-UC13         | `pkg info -d {pkgname}`
-UC14         | `pkg info -r {pkgname}`
-UC15         | `pkg set -A 0 {pkgname}` <br> `pkg set -A 1 {pkgname}`
+[freebsd.md](./freebsd.md) 参照
 
 ### pacman (MSYS2, Windows)
 
@@ -129,60 +113,12 @@ UC15         | `pkg set -A 0 {pkgname}` <br> `pkg set -A 1 {pkgname}`
 
 ### apt (Ubuntu, Debian)
 
-ユースケース | コマンド
-:-----------:|--------------------------------------------------------------
-UC01         | `apt install {pkgname}`
-UC02         | `apt remove {pkgname}` <br> `apt purge {pkgname}`
-UC03         | `apt autoremove`
-UC04         | `apt upgrade`
-UC05         | `apt update`
-UC06         | `apt list` <br> `LANG=C apt list \| grep -v installed`
-UC07         | `apt show {pkgname}`
-UC08         | `apt depends {pkgname}`
-UC09         | `apt list --installed` <br> `apt-mark showauto` <br> `apt-mark showmanual`
-UC10         | `apt show {pkgname}`
-UC11         | `dpkg -L {pkgname}`
-UC12         | `dpkg -S {/path/to/file}`
-UC13         | `apt depends {pkgname}`
-UC14         | `apt rdepends {pkgname}`
-UC15         | `apt-mark manual {pkgname}` <br> `apt-mark auto {pkgname}`
+[apt-ubuntu.md](./apt-ubuntu.md) 参照
 
 ### dnf (Fedora)
 
-ユースケース | コマンド
-:-----------:|--------------------------------------------------------------
-UC01         | `dnf install {pkgname}`
-UC02         | `dnf remove {pkgname}`
-UC03         | `dnf autoremove`
-UC04         | `dnf upgrade`
-UC05         | `dnf --refresh upgrade`
-UC06         | `dnf list --available [pattern]`
-UC07         | `dnf info [--available] {pkgname}`
-UC08         | `dnf repoquery --requires {pkgname}`
-UC09         | `dnf list --installed` <br> `dnf repoquery --userinstalled` <br> `dnf repoquery --installed --qf='%{name}-%{evr}.%{arch} (%{reason})\n' \| grep -v '(User)'`
-UC10         | `dnf info [--installed] {pkgname}`
-UC11         | `dnf repoquery [--installed] -l {pkgname}`
-UC12         | `dnf repoquery [--installed] -f {/path/to/file}`
-UC13         | `dnf repoquery --requires {pkgname}`
-UC14         | `dnf repoquery --whatrequires {pkgname} --installed`
-UC15         | `dnf mark install {pkgname}` <br> `dnf mark remove {pkgname}`
+[dnf-fedora.md](./dnf-fedora.md) 参照
 
 ### (OPTION) winget
 
-ユースケース | コマンド
-:-----------:|--------------------------------------------------------------
-UC01         |
-UC02         |
-UC03         |
-UC04         |
-UC05         |
-UC06         |
-UC07         |
-UC08         |
-UC09         |
-UC10         |
-UC11         |
-UC12         |
-UC13         |
-UC14         |
-UC15         |
+(まだ調べてない)
