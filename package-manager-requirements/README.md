@@ -175,7 +175,7 @@ UC05         | `dnf --refresh upgrade`
 UC06         | `dnf list --available [pattern]`
 UC07         | `dnf info [--available] {pkgname}`
 UC08         | `dnf repoquery --requires {pkgname}`
-UC09         | `dnf list --installed` <br> `dnf repoquery --userinstalled` <br> `dnf repoquery --installed --qf='%{name}-%{evr}.%{arch} (%{reason})' \| grep -v '(user)'`
+UC09         | `dnf list --installed` <br> `dnf repoquery --userinstalled` <br> `dnf repoquery --installed --qf='%{name}-%{evr}.%{arch} (%{reason})\n' \| grep -v '(User)'`
 UC10         | `dnf info [--installed] {pkgname}`
 UC11         | `dnf repoquery [--installed] -l {pkgname}`
 UC12         | `dnf repoquery [--installed] -f {/path/to/file}`
