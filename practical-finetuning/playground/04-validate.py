@@ -210,6 +210,5 @@ if __name__ == '__main__':
 
     if len(remains) > 0:
         validations = remains
-    print("remains=", remains)
 
     model_validate(model, validations)
