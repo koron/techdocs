@@ -2,7 +2,7 @@
 #
 # Script to download models for paligemma and tokenizer.
 #
-# Paligemma自身とトークナイザーのモデルをダウンロードする
+# PaliGemma自身とトークナイザーのモデルをダウンロードする
 # ダウンロード先は /root/.cache/ ディレクトリ
 
 import os
