@@ -14,8 +14,8 @@ UC07  |未・詳細説明     | `apt show {pkgname}`
 UC08  |未・依存一覧     | `apt depends {pkgname}`
 UC09a |済・一覧         | `apt list --installed`
 UC09b |済・名前フィルタ | ???
-UC09c |済・手動属性     | `apt-mark showauto`
-UC09d |済・自動属性     | `apt-mark showmanual`
+UC09c |済・手動属性     | `apt-mark showmanual`
+UC09d |済・自動属性     | `apt-mark showauto`
 UC10  |済・詳細説明     | `apt show {pkgname}`
 UC11  |済・構成一覧     | `dpkg -L {pkgname}`
 UC12  |済・構成逆引き   | `dpkg -S {/path/to/file}`
