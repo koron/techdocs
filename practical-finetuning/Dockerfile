@@ -1,4 +1,4 @@
-FROM ghcr.io/nvidia/jax:gemma-2024-11-11
+FROM ghcr.io/nvidia/jax:gemma-2024-12-09
 
 RUN pip install gsutil
 
