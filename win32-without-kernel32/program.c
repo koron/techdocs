@@ -1,0 +1,2 @@
+void mainCRTStartup(void) {
+}

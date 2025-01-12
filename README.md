@@ -36,6 +36,7 @@ Title                                                           |Date       |Sta
 [パッケージマネージャへの要件](./package-manager-requirements)  |2024-08-19 |Done
 [RP2350用C言語プログラムをビルド](./rp2350-build-cprogram)      |2024-08-31 |Done
 [実践的なファインチューニング](./practical-finetuning) 	        |2024-10-30 |WIP
+[kenrel32.dllを使わないプログラム](./win32-without-kernel32)    |2025-01-12 |Done
 
 ## Future topics
 
