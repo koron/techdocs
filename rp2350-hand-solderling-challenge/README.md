@@ -38,3 +38,7 @@
     1. U2        USB Power Protection IC CH213K
     1. U3        Regulator 3.3V SOT-89 AMS1117-3.3
     1. J2        Box Pin Header 2x5 Pitch 1.27mm
+
+## 作業記録動画
+
+* その1: USBレセプタクル、RP2350A、クリスタルのハンダ付け <https://www.youtube.com/watch?v=hy3x_fPZgcA>
