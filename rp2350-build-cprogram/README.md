@@ -114,7 +114,7 @@ RP2040用のはビルドしてインストールしていたが、新たにRP235
         $ file build/rp2350/hello_world/serial/hello_serial.uf2
         build/rp2350/hello_world/serial/hello_serial.uf2: UF2 firmware image, family 0xe48bff57, address 0x10ffff00, 2 total blocks
 
-        $ picotool build/rp2350/hello_world/serial/hello_serial.uf2
+        $ picotool info -a build/rp2350/hello_world/serial/hello_serial.uf2
 
         File build/rp2350/hello_world/serial/hello_serial.uf2:
 

@@ -42,3 +42,9 @@
 ## 作業記録動画
 
 * その1: USBレセプタクル、RP2350A、クリスタルのハンダ付け <https://www.youtube.com/watch?v=hy3x_fPZgcA>
+* その2: 残りの部品のハンダ付け <https://www.youtube.com/watch?v=1Ca5SVNlbrk>
+
+PCに接続して認識されるところまで確認した。
+(この時点ではプログラムが書き込めるかはわからない)
+
+その後 [pico-examplesのblink\_simple](https://github.com/raspberrypi/pico-examples/tree/master/blink_simple) が動くことを確認した。
