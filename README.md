@@ -32,12 +32,13 @@ Title                                                                 |Date     
 [CyberAgnetのLVM: llava-calm2-siglip](./llava-calm2-siglip)           |2024-06-20 |Done
 [Finetune HF チュートリアル](./finetune-hf-tutorial)                  |2024-07-17 |WIP
 [Fedora再導入記](./fedora-reintroduction)                             |2024-07-19 |WIP
-[RP2350の調査](./rp2350-investigation)	                              |2024-08-09 |Done
+[RP2350の調査](./rp2350-investigation)                                |2024-08-09 |Done
 [パッケージマネージャへの要件](./package-manager-requirements)        |2024-08-19 |Done
 [RP2350用C言語プログラムをビルド](./rp2350-build-cprogram)            |2024-08-31 |Done
-[実践的なファインチューニング](./practical-finetuning) 	              |2024-10-30 |WIP
+[実践的なファインチューニング](./practical-finetuning)                |2024-10-30 |WIP
 [kenrel32.dllを使わないプログラム](./win32-without-kernel32)          |2025-01-12 |Done
-[RP2350A手はんだキットへの挑戦記](./rp2350-hand-solderling-challenge) |2025-01-17 | WIP
+[RP2350A手はんだキットへの挑戦記](./rp2350-hand-solderling-challenge) |2025-01-17 |WIP
+[MHP50マニュアル日本語訳](./mhp50-manual-ja)                          |2025-01-19 |WIP
 
 
 ## Future topics
