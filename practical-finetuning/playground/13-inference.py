@@ -224,14 +224,14 @@ if __name__ == '__main__':
         for rows in niter(csv.reader(f, delimiter="\t"), batch_size):
             images = [row[4] for row in rows]
             results = inference_batch(PROMPT, images)
-            for i in range(batch_size):
+            for i in range(len(rows)):
                 id = rows[i][0]
                 approve = str_to_bool(rows[i][1])
                 category = rows[i][3]
                 image_name = rows[i][4]
                 result = results[i].replace("\n", "\\n")
                 print(f"{id}\t{approve}\t{category}\t{image_name}\t{result}", flush=True)
-            n += batch_size
+            n += len(rows)
             print(f"#\t{datetime.datetime.now()}\t{n}", file=sys.stderr)
 
     sys.exit(0)
