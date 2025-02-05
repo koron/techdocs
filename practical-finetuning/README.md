@@ -422,8 +422,6 @@ Result: ./dataset/safe.jsonl
 人の目で判断しにくいギリギリのケースを仕分けることにのみ利用可能な状態にあるのでは
 と推測できる。
 
-
-
 ## 課題
 
 アニメーションGIFは特定の(おそらく最終)フレームだけを学習・推論に利用している。
@@ -436,3 +434,15 @@ Result: ./dataset/safe.jsonl
 またこのデータセット学習後のモデルで「明らかにセーフ」や「明らかにアウト」のケースをinferenceしたら、
 過学習により汎化能力を失ってることを考えると、ガタガタになる可能性が高い。
 たしかめてみる。
+
+## 補題
+
+### 行指向入力データをシャッフルして分割する別解
+
+```console
+shuf indata.tsv | spilt -l 1000 --additional-suffix .tsv - outdir/splitted-
+```
+
+1万行のデータを上記コマンドで処理すると、シャッフルした上で
+outdir/splitted-aa.tsv から outdir/splitted-aj.tsv まで
+10個のファイルに分けられる。

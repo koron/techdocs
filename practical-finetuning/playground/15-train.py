@@ -1,14 +1,5 @@
 #!/usr/bin/python
 #
-# 全入力を推論して、結果一覧を得る
-#
-# USAGE: ./13-inference.py -d {INPUT TSV} [OPTIONS]
-#
-# OPTIONS:
-#
-#   -d/--data       入力となるTSVデータファイル (要素はID, expected, image URL, category, image relative pathの5つ)
-#   -i/--imageroot  画像の√ディレクトリ (デフォルト: データファイルのディレクトリ)
-#   -b/--batchsize  推論のバッチサイズ (デフォルト: 4)
 
 PROMPT = "Answer yes or no to whether this image is approved as an ad by Google Adsense." # 19 tokens
 
@@ -182,6 +173,12 @@ def niter(iter, n):
         if len(chunk) > 0:
             yield chunk
 
+def shuffle_repeat_iter(all):
+    while True:
+        batch = random.sample(all, len(all))
+        for item in batch:
+            yield item
+
 ##############################################################################
 # main
 
@@ -195,7 +192,7 @@ if __name__ == '__main__':
     batch_size = 4
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-d", "--data", help='data samples (TSV)')
+    parser.add_argument("-d", "--data", help='data for training (TSV)')
     parser.add_argument("-i", "--imageroot", help='image root directory')
     parser.add_argument("-b", "--batchsize", help='batch size')
     args, remains = parser.parse_known_args(sys.argv[1:])
