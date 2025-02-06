@@ -227,8 +227,9 @@ if __name__ == '__main__':
                 approve = str_to_bool(rows[i][1])
                 category = rows[i][3]
                 image_name = rows[i][4]
+                #got = str_to_bool(rows[i][5])
                 result = results[i].replace("\n", "\\n")
-                print(f"{id}\t{approve}\t{category}\t{image_name}\t{result}", flush=True)
+                print(f"{id}\t{approve}\t\t{category}\t{image_name}\t{result}", flush=True)
             n += len(rows)
             print(f"#\t{datetime.datetime.now()}\t{n}", file=sys.stderr)
 

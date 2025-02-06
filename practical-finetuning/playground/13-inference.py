@@ -231,7 +231,7 @@ if __name__ == '__main__':
                 category = rows[i][3]
                 image_name = rows[i][4]
                 result = results[i].replace("\n", "\\n")
-                print(f"{id}\t{approve}\t{category}\t{image_name}\t{result}", flush=True)
+                print(f"{id}\t{approve}\t\t{category}\t{image_name}\t{result}", flush=True)
             n += len(rows)
             print(f"#\t{datetime.datetime.now()}\t{n}", file=sys.stderr)
 

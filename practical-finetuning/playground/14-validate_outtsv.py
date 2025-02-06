@@ -26,7 +26,7 @@ if __name__ == '__main__':
         with open(name) as f:
             for row in csv.reader(f, delimiter="\t"):
                 want = str_to_bool(row[1])
-                got = str_to_bool(row[4])
+                got = str_to_bool(row[5])
                 if want == got:
                     if want:
                         Tp += 1
