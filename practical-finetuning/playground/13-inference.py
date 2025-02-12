@@ -195,6 +195,7 @@ if __name__ == '__main__':
     batch_size = 4
 
     parser = argparse.ArgumentParser()
+    parser.add_argument("-l", "--load", help='load a file as model parameters')
     parser.add_argument("-d", "--data", help='data samples (TSV)')
     parser.add_argument("-i", "--imageroot", help='image root directory')
     parser.add_argument("-b", "--batchsize", help='batch size')
@@ -210,6 +211,9 @@ if __name__ == '__main__':
             case "batchsize":
                 if value is not None:
                     batch_size = int(value)
+            case "load":
+                if value is not None:
+                    MODEL_PATH = value
 
     if data_path is None:
         raise RuntimeError("-d/--data is required")
