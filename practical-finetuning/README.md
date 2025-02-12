@@ -446,3 +446,55 @@ shuf indata.tsv | spilt -l 1000 --additional-suffix .tsv - outdir/splitted-
 1万行のデータを上記コマンドで処理すると、シャッフルした上で
 outdir/splitted-aa.tsv から outdir/splitted-aj.tsv まで
 10個のファイルに分けられる。
+
+### 学習時のVRAM
+
+学習のスクリプトに以下のコードを追加することで、
+VRAMの割り当てを都度割り当てにし、10個程度までバッチサイズを大きくできた。
+
+```python
+import os
+os.environ['XLA_PYTHON_CLIENT_PREALLOCATE'] = 'false'
+os.environ['XLA_PYTHON_CLIENT_ALLOCATOR'] = 'platform'
+```
+
+どうやらJAXはPythonのオブジェクトをVRAMに転送する際、
+予めVRAMを確保したり、
+そのオブジェクトが使われなくなってもキャッシュして可能な限り解放しないらしい。
+結果、その後の計算に不要なメモリを持ち続け、必要なメモリを確保できないとのこと。
+
+上記の設定はそれを必要に応じて確保するようにし、使わないVRAMは即時解放するようにしている。
+結果、VRAMへのロードは増えオーバーヘッドがあるものの、必要なオブジェクトのみがVRAMに乗るため、
+限られたVRAMサイズでも大きめのバッチで学習できるようになった。
+
+### 学習の評価
+
+分けたファイルの1つaaから先頭64個を抽出し、
+バッチ10個 learning rate 0.001 で学習しパラメーターを保存。
+
+その保存したパラメーターで分けたファイルの1つabを推定し、
+学習前後の成績確認。
+
+```console
+$ ./14-validate_outtsv.py tmp/*-ab.tsv
+Aggregate: tmp/out64-b10-ab.tsv
+  Tp=854 Tn=17 Fp=155 Fn=13
+  accuracy:  0.8383060635226179
+  precision: 0.846382556987116
+  recall:    0.9850057670126874
+  F-measure: 0.9104477611940298
+Aggregate: tmp/splitted-ab.tsv
+  Tp=652 Tn=57 Fp=115 Fn=215
+  accuracy:  0.6823869104908566
+  precision: 0.8500651890482399
+  recall:    0.7520184544405998
+  F-measure: 0.7980416156670748
+```
+
+一見良くなっているように見えるがTnとFnが減りTpとFpが増えている。
+これはnoだったものが学習でyesになったことを示しており
+もともと正当がyesである率が高いため、
+学習が成功したとは評価しづらい。
+そのことはprecisionが下がっていることが裏付けている。
+
+学習に使うデータを再検討したほうが良かろう。
