@@ -28,15 +28,15 @@ if __name__ == '__main__':
                 want = str_to_bool(row[1])
                 got = str_to_bool(row[5])
                 if want == got:
-                    if want:
+                    if got:
                         Tp += 1
                     else:
                         Tn += 1
                 else:
-                    if want:
-                        Fn += 1
-                    else:
+                    if got:
                         Fp += 1
+                    else:
+                        Fn += 1
         print(f"  Tp={Tp} Tn={Tn} Fp={Fp} Fn={Fn}")
         accuracy = (Tp + Tn) / (Tp + Tn + Fp + Fn)
         print(f"  accuracy:  {accuracy}")

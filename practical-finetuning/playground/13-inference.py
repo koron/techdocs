@@ -41,9 +41,9 @@ import big_vision.utils
 import big_vision.sharding
 import big_vision.datasets.jsonl
 import sentencepiece
-import tensorflow as tf
+#import tensorflow as tf
 
-tf.config.set_visible_devices([], "GPU")
+#tf.config.set_visible_devices([], "GPU")
 
 ##############################################################################
 # Initialize model, parameters, and tokenizer.
