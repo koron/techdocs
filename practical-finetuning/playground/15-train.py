@@ -173,6 +173,7 @@ def create_training_batch(text, images, wants):
     return batch
 
 def compose_training_item(prefix, image_name, suffix):
+    #print(f"image_name={image_name} suffix={suffix}")
     image = load_image(image_name)
     tokens, mask_ar, mask_loss, _ = preprocess_tokens(prefix, suffix=suffix, seqlen=SEQLEN)
     item = {

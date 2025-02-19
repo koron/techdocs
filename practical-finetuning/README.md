@@ -498,3 +498,135 @@ Aggregate: tmp/splitted-ab.tsv
 そのことはprecisionが下がっていることが裏付けている。
 
 学習に使うデータを再検討したほうが良かろう。
+
+aaセットから `false positive/negative` だけ、64件を取り出して学習してみる。
+
+```console
+$ ./16-filter_train_data.py tmp/splitted-aa.tsv | head -64 > tmp/false64.tsv
+$ ./15-train.py -d tmp/false64.tsv -i dataset/pub_judges -b 10 -r 0.001 -s checkpoints/false64-r0.001-b10.npz
+
+$ ./13-inference.py -l ./checkpoints/false64-r0.001-b10.npz -d tmp/splitted-ab.tsv -i dataset/pub_judges -b 4 | tee tmp/out-false64-r0.001-b10-ab.tsv
+
+$ ./13-inference.py -l ./checkpoints/false64-r0.001-b10.npz -d tmp/splitted-aa.tsv -i dataset/pub_judges -b 4 | tee tmp/out-false64-r0.001-b10-aa.tsv
+
+$ ./14-validate_outtsv.py tmp/out-false64-r0.001-b10-aa.tsv tmp/out-false64-r0.001-b10-ab.tsv tmp/splitted-ab.tsv
+Aggregate: tmp/out-false64-r0.001-b10-aa.tsv
+  Tp=880 Tn=0 Fp=159 Fn=0
+  accuracy:  0.8469682386910491
+  precision: 0.8469682386910491
+  recall:    1.0
+  F-measure: 0.9171443460135488
+Aggregate: tmp/out-false64-r0.001-b10-ab.tsv
+  Tp=867 Tn=0 Fp=172 Fn=0
+  accuracy:  0.8344562078922041
+  precision: 0.8344562078922041
+  recall:    1.0
+  F-measure: 0.9097586568730325
+Aggregate: tmp/splitted-ab.tsv
+  Tp=652 Tn=57 Fp=115 Fn=215
+  accuracy:  0.6823869104908566
+  precision: 0.8500651890482399
+  recall:    0.7520184544405998
+  F-measure: 0.7980416156670748
+```
+
+yes とだけ返すように学習してしまったようだ。
+false negative のデータが多いため (Fn=215)
+yes と返すことを学習するのではと予想できる。
+
+true positive だけを除いた64件のデータで8バッチにして8回(計64ステップ)学習してみる。
+
+```console
+$ grep -v '\bTrue\b.*\byes$' ./tmp/splitted-aa.tsv | head -64 > tmp/noTp64.tsv
+
+$ ./15-train.py -d tmp/noTp64.tsv -i dataset/pub_judges -t 8 -b 8 -r 0.001 -s checkpoints/noTp64-t8-r0.001-b80.npz
+
+$ ./13-inference.py -l ./checkpoints/noTp64-t8-r0.001-b8.npz -d tmp/splitted-ab.tsv -i dataset/pub_judges | tee tmp/out-noTp64-t8-r0.001-b8-ab.tsv
+$ ./13-inference.py -l ./checkpoints/noTp64-t8-r0.001-b8.npz -d tmp/splitted-aa.tsv -i dataset/pub_judges | tee tmp/out-noTp64-t8-r0.001-b8-aa.tsv
+$ ./13-inference.py -l ./checkpoints/noTp64-t8-r0.001-b8.npz -d tmp/noTp64.tsv      -i dataset/pub_judges | tee tmp/out-noTp64-t8-r0.001-b8-xx.tsv
+
+$ ./14-validate_outtsv.py tmp/out-noTp64-t8-r0.001-b8-xx.tsv tmp/noTp64.tsv
+Aggregate: tmp/out-noTp64-t8-r0.001-b8-xx.tsv
+  Tp=41 Tn=23 Fp=0 Fn=0
+  accuracy:  1.0
+  precision: 1.0
+  recall:    1.0
+  F-measure: 1.0
+Aggregate: tmp/noTp64.tsv
+  Tp=0 Tn=5 Fp=18 Fn=41
+  accuracy:  0.078125
+  precision: 0.0
+  recall:    0.0
+
+$ ./14-validate_outtsv.py tmp/out-noTp64-t8-r0.001-b8-ab.tsv tmp/splitted-ab.tsv
+Aggregate: tmp/out-noTp64-t8-r0.001-b8-ab.tsv
+  Tp=813 Tn=41 Fp=131 Fn=54
+  accuracy:  0.821944177093359
+  precision: 0.861228813559322
+  recall:    0.9377162629757786
+  F-measure: 0.8978464936499171
+Aggregate: tmp/splitted-ab.tsv
+  Tp=652 Tn=57 Fp=115 Fn=215
+  accuracy:  0.6823869104908566
+  precision: 0.8500651890482399
+  recall:    0.7520184544405998
+  F-measure: 0.7980416156670748
+
+$ ./14-validate_outtsv.py tmp/out-noTp64-t8-r0.001-b8-aa.tsv tmp/splitted-aa.tsv
+Aggregate: tmp/out-noTp64-t8-r0.001-b8-aa.tsv
+  Tp=837 Tn=47 Fp=112 Fn=43
+  accuracy:  0.8508180943214629
+  precision: 0.8819810326659642
+  recall:    0.9511363636363637
+  F-measure: 0.9152542372881356
+Aggregate: tmp/splitted-aa.tsv
+  Tp=648 Tn=52 Fp=107 Fn=232
+  accuracy:  0.6737247353224254
+  precision: 0.8582781456953642
+  recall:    0.7363636363636363
+  F-measure: 0.7926605504587156
+```
+
+true positive を除外しない aaからの64件のデータで、8バッチに8回(計64ステップ)学習し、傾向をみる。
+
+```console
+$ ./15-train.py -d tmp/test64.tsv -i dataset/pub_judges -b 8 -r 0.001 -t8 -s checkpoints/test64-t8-r0.001-b8.npz
+
+$ ./13-inference.py -l checkpoints/test64-t8-r0.001-b8.npz -d tmp/splitted-ab.tsv -i dataset/pub_judges | tee tmp/out-test64-t8-r0.001-b8-ab.tsv
+$ ./14-validate_outtsv.py tmp/out-test64-t8-r0.001-b8-ab.tsv ./tmp/splitted-ab.tsv
+Aggregate: tmp/out-test64-t8-r0.001-b8-ab.tsv
+  Tp=866 Tn=20 Fp=152 Fn=1
+  accuracy:  0.8527430221366699
+  precision: 0.8506876227897839
+  recall:    0.9988465974625144
+  F-measure: 0.9188328912466843
+Aggregate: ./tmp/splitted-ab.tsv
+  Tp=652 Tn=57 Fp=115 Fn=215
+  accuracy:  0.6823869104908566
+  precision: 0.8500651890482399
+  recall:    0.7520184544405998
+  F-measure: 0.7980416156670748
+
+./13-inference.py -l checkpoints/test64-t8-r0.001-b8.npz -d tmp/splitted-aa.tsv -i dataset/pub_judges | tee tmp/out-test64-t8-r0.001-b8-aa.tsv
+./14-validate_outtsv.py tmp/out-test64-t8-r0.001-b8-aa.tsv ./tmp/splitted-aa.tsv
+Aggregate: tmp/out-test64-t8-r0.001-b8-aa.tsv
+  Tp=878 Tn=25 Fp=134 Fn=2
+  accuracy:  0.8691049085659288
+  precision: 0.8675889328063241
+  recall:    0.9977272727272727
+  F-measure: 0.9281183932346723
+Aggregate: ./tmp/splitted-aa.tsv
+  Tp=648 Tn=52 Fp=107 Fn=232
+  accuracy:  0.6737247353224254
+  precision: 0.8582781456953642
+  recall:    0.7363636363636363
+  F-measure: 0.7926605504587156
+```
+
+#### ここまでのまとめ (2025-02-19)
+
+* `yes` と答える圧力が強い (全体の85%以上が `yes` であることによる)
+* 学習はイテレーションをした方が良い。過学習(常にyesと答える)が抑制される傾向にある
+* 学習データからtrue positiveを除いた方が `yes` 圧力は弱まる
+* 「true negative が減ってしまう」&「false positive が増えてしまう」ことが問題
+    * true negative と false positive のデータだけで学習させたら、どうなるか見たほうが良い
