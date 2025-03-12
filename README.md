@@ -39,6 +39,7 @@ Title                                                                 |Date     
 [kenrel32.dllを使わないプログラム](./win32-without-kernel32)          |2025-01-12 |Done
 [RP2350A手はんだキットへの挑戦記](./rp2350-hand-solderling-challenge) |2025-01-17 |WIP
 [MHP50マニュアル日本語訳](./mhp50-manual-ja)                          |2025-01-19 |WIP
+[Merlin Transformer4Rec](./NVIDIA-Merlin/Transformers4Rec)	          |2025-03-12 |WIP
 
 
 ## Future topics
