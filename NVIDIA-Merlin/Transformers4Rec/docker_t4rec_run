@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -eu
+
+datadir_opt=""
+
+convpath() {
+  case $(uname -s) in
+    MSYS*) echo $(cygpath -aw "$1") ;;
+    *) echo "$1" ;;
+  esac
+}
+
+while getopts "d:" OPT ; do
+  case $OPT in
+    d) datadir_opt="-v $(convpath "$OPTARG"):/workspace/data" ;;
+    *) exit 1 ;;
+  esac
+done
+shift $((OPTIND - 1))
+
+exec docker run \
+  ${datadir_opt} \
+  --gpus all \
+  --rm -it \
+  -p 8888:8888 \
+  -p 8797:8787 \
+  -p 8796:8786 \
+  --ipc=host \
+  --cap-add SYS_NICE \
+  nvcr.io/nvidia/merlin/merlin-pytorch:nightly \
+  "$@"
