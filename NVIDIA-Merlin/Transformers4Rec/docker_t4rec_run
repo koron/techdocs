@@ -3,6 +3,7 @@
 set -eu
 
 datadir_opt=""
+name_opt=""
 
 convpath() {
   case $(uname -s) in
@@ -11,9 +12,10 @@ convpath() {
   esac
 }
 
-while getopts "d:" OPT ; do
+while getopts "d:n:" OPT ; do
   case $OPT in
     d) datadir_opt="-v $(convpath "$OPTARG"):/workspace/data" ;;
+    n) name_opt="--name $OPTARG" ;;
     *) exit 1 ;;
   esac
 done
@@ -21,11 +23,15 @@ shift $((OPTIND - 1))
 
 exec docker run \
   ${datadir_opt} \
+  ${name_opt} \
   --gpus all \
   --rm -it \
   -p 8888:8888 \
   -p 8797:8787 \
   -p 8796:8786 \
+  -p 8000:8000 \
+  -p 8001:8001 \
+  -p 8002:8002 \
   --ipc=host \
   --cap-add SYS_NICE \
   nvcr.io/nvidia/merlin/merlin-pytorch:nightly \
