@@ -123,4 +123,4 @@ for time_index in range(start_time_window_index, final_time_window_index):
     wipe_memory()
 
 model.save(os.path.join(INPUT_DATA_DIR, "trained_model1"))
-trainer.save_model(os.path.join(INPUT_DATA_DIR, "trained_model2"))
+#trainer.save_model(os.path.join(INPUT_DATA_DIR, "trained_model2"))
