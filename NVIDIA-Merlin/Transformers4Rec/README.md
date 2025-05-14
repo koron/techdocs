@@ -2,7 +2,7 @@
 
 参考: [古い記録](./README.md)
 
-Transformers4Rec は、ユーザーの行動に基づき何かしらのアイテムを提案するレコメンドシステムを、
+Transformers4Rec (t4rec) は、ユーザーの行動に基づき何かしらのアイテムを提案するレコメンドシステムを、
 LLMで一般的になった Transformer を用いて実現するためのソリューションである。
 特に [Huggging Face Transformers][hf_transformers] で利用可能な Transformers モデルを任意に利用できる点が特徴である。
 また入力にアイテムについてのデータだけでなく、
@@ -121,6 +121,154 @@ ID生成時には要素の多い順にIDが順番に振られていた。
 という傾向がある。
 しかし場合によっては、大きい番号が先に出たりと、逆転することもある。
 
+## 確認用のJupyter notebook (trial.ipynb) の使い方
+
+本ディレクトリに移動する
+
+    $ cd NVIDIA-Merlin/Transformers4Rec
+
+notebookディレクトリをマウントしてdockerコンテナを起動する
+
+    $ ./docker_t4rec_run -d notebook -n t4rec
+
+dockerコンテナ内に kagglehub モジュールをインストールする
+本ステップが必要なのは学習用データ `2019-Oct.csv` のダウンロードが必要な時だけ
+
+    $ pip3 install -U kagglehub
+
+dockerコンテナ内に Kaggle のAPIキーを設定する。
+本ステップが必要なのは学習用データ `2019-Oct.csv` のダウンロードが必要な時だけ。
+APIキーの取得方法は [公式ドキュメント](https://www.kaggle.com/docs/api#authentication) を参照すること
+
+    $ export KAGGLE_USERNAME=xxxxxxxx
+    $ export KAGGLE_KEY=xxxxxxxx
+
+dockerコンテナ内でjupyter notebookを起動する
+
+    $ cd / ; jupyter-lab --allow-root --ip='0.0.0.0' --NotebookApp.token=''
+
+<http://127.0.0.1:8888/lab/tree/workspace/data> をブラウザで開き `trial.ipynb` を開く
+
+
+## データ構造
+
+t4recで扱うデータ構造(スキーマ)は複数存在する。
+
+*   生CSV
+*   CSVを Parquet に変換したもの
+*   ETLによりセッション毎にまとめた Parquet
+*   日付ごとに分割したもの
+*   t4rec モデルの入力
+*   t4rec モデルの出力
+
+あるデータ構造は、その1つ前段階のデータ構造からの変換で作られている。
+
+以下ではそれぞれのスキーマ(≒カラム情報)を列挙する。
+
+### 生CSV
+
+ファイル名: `notebook/2019-Oct.csv`
+
+カラム名        | 説明
+----------------|--------------------------------------
+`event_time`    | イベント発生時刻
+`event_type`    | イベントの種別
+`product_id`    | 対象となる製品ID
+`category_id`   | 製品カテゴリのID
+`category_code` | 製品カテゴリのコード
+`brand`         | 製品のブランド名
+`price`         | 価格
+`user_id`       | イベントを発生させたユーザーID
+`user_session`  | ユーザーのセッションID
+
+### CSV を Parquet に変換したもの
+
+ファイル名: `notebook/Oct-2019.parquet`
+
+カラム名                   | 説明
+---------------------------|--------------------------------------
+`event_type`               | イベント発生時刻
+`product_id`               | 対象となる製品ID
+`category_id`              | 製品カテゴリのID
+`category_code`            | 製品カテゴリのコード
+`brand`                    | 製品のブランド名
+`price`                    | 価格
+`user_id`                  | イベントを発生させたユーザーID
+`event_time_ts`            | `event_time` の秒表記
+`user_session`             | ユーザーのセッションID
+`prod_first_event_time_ts` | その製品が初めて登場した時刻
+
+サンプルコードではこの時点でデータを最初の7日間に絞り込んでいる。
+
+### ETLによりセッション毎にまとめた Parquet
+
+ファイル名: `notebook/processed_nvt/part_0.parquet`
+
+カラム名                              | 説明
+--------------------------------------|--------------------------------------
+`user_session`                        | ユーザーのセッションID (正規化済)
+`product_id-count`                    | 1セッションで参照された製品の数
+`product_id-list`                     | 参照された製品のIDのリスト (最大20、IDは正規化済)
+`category_code-list`                  | 参照された製品のカテゴリコードのリスト (最大20、コードは正規化済)
+`brand-list`                          | 参照された製品のブランドのリスト (最大20、ブランド名は正規化済)
+`category_id-list`                    | 参照された製品のカテゴリIDのリスト (最大20、IDは正規化済)
+`et_dayofweek_sin-list`               | イベント発生曜日を循環構造に変換した正弦(sin)成分 (最大20)
+`et_dayofweek_cos-list`               | イベント発生曜日を循環構造に変換した余弦(cos)成分 (最大20)
+`price_log_norm-list`                 | 参照された製品の価格データを正規化したもののリスト (最大20)
+`relative_price_to_avg_categ_id-list` | 製品価格をカテゴリの平均価格に対して相対化したもの (最大20)
+`product_recency_days_log_norm-list`  | 参照された各製品の最新性(?)を表すリスト (最大20)
+`day_index`                           | セッションの開始日を代表インデックスとしたもの(1始り)
+
+参照された製品をセッション毎にまとめている。
+
+正規化済とは、ID等の離散値を出現頻度順に並べて多い方から順に番号を振りなおしていることを言う。
+逆変換に必要なデータは `notebook/categories/unique.*.parquet` に格納されている。
+
+`et_dayofweek_sin-list` と `et_dayofweek_cos-list` については [時間の特徴量の循環表現](#時間の特徴量の循環表現) に記載の通り、
+時間的な特徴量は循環的な性質を持つため sin & cos のペアを使って表現している。
+今回のケースでは曜日ごとに売れるものが特徴づけられているのではないか、
+という仮定を置いている。
+
+参考: https://ianlondon.github.io/posts/encoding-cyclical-features-24-hour-time/
+
+### 日付ごとに分割したもの
+
+前述のファイル(ETLによりセッション毎にまとめた Parquet)を `day_index` の値で日付ごとにパーティショニングして、
+かつ学習用、テスト用、検証用の3つのデータセットに分割したもの。
+`notebook/sessions_by_day/{day_index}` ディレクトリそれぞれに `train.parquet`, `test.parquet`, `valid.parquet` として保存される。
+
+### t4rec モデルの入力
+
+カラム名                              | Transformers4Rec用タグ
+--------------------------------------|--------------------------------------
+`product_id-list`                     | ID, ITEM, CATEGORICAL, LIST
+`brand-list`                          | CATEGORICAL, LIST
+`category_id-list`                    | CATEGORICAL, LIST
+`product_recency_days_log_norm-list`  | CONTINUOUS, LIST
+`et_dayofweek_sin-list`               | CONTINUOUS, LIST
+`et_dayofweek_cos-list`               | CONTINUOUS, LIST
+`price_log_norm-list`                 | CONTINUOUS, LIST
+`relative_price_to_avg_categ_id-list` | CONTINUOUS, LIST
+
+あるセッションがこれまでに参照した製品のリストとそレに対応する(t4recのコンテキストにおける)各種カテゴリのリストから、
+続けて推薦すべき製品リストを提案するという建て付けになっている。
+
+タグの意味付けはおおむね以下のような印象
+
+* ITEM, ID - 推薦対象となるアイテムとその識別情報
+* CATEGORICAL - 推薦のヒントとなるアイテムのカテゴリ情報
+* CONTINUOUS - 推薦のヒントとなるアイテムの近接情報
+* LIST - リストであることを付記する装飾タグ
+
+詳細なデータは[ノートブック][notebook]の末尾に添付してある
+
+### t4rec モデルの出力
+
+カラム名         | 説明
+-----------------|----------------------------------------------
+`next-item``[0]` | 推薦する製品のIDリスト (100個)
+`next-item``[1]` | 推薦する製品の logit (100個)
+
 ## まとめ
 
 *   Triton Inference Serverを使わずに推論(提案)が利用できた
@@ -130,3 +278,5 @@ ID生成時には要素の多い順にIDが順番に振られていた。
     (WorkflowによるIDの発番が必要なため)
 
 *   一連の流れを俯瞰で確認できる1枚の [Jupyter notebook](./notebook/trial.ipynb) を作った
+
+[notebook]:./notebook/trial.ipynb
