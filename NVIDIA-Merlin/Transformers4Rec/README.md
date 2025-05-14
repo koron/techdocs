@@ -74,6 +74,8 @@ Tritonサーバーが機能しない理由は不明だが、
     1つのデータは1セッションに相当し、
     1セッションに対して100個のアイテムが提案される。
 
+またコレのスクリプトをまとめて実行可能にするために [ノートブック][notebook] を作成した。
+
 ## ポイント
 
 *   初めての訪問者にも提案がされる
@@ -123,31 +125,35 @@ ID生成時には要素の多い順にIDが順番に振られていた。
 
 ## 確認用のJupyter notebook (trial.ipynb) の使い方
 
-本ディレクトリに移動する
+[ノートブック][notebook] を利用するには以下の手順に従うこと
 
-    $ cd NVIDIA-Merlin/Transformers4Rec
+1. 本ディレクトリに移動する
 
-notebookディレクトリをマウントしてdockerコンテナを起動する
+        $ cd NVIDIA-Merlin/Transformers4Rec
 
-    $ ./docker_t4rec_run -d notebook -n t4rec
+2. notebookディレクトリをマウントしてdockerコンテナを起動する
 
-dockerコンテナ内に kagglehub モジュールをインストールする
-本ステップが必要なのは学習用データ `2019-Oct.csv` のダウンロードが必要な時だけ
+        $ ./docker_t4rec_run -d notebook -n t4rec
 
-    $ pip3 install -U kagglehub
+3. dockerコンテナ内に kagglehub モジュールをインストールする
 
-dockerコンテナ内に Kaggle のAPIキーを設定する。
-本ステップが必要なのは学習用データ `2019-Oct.csv` のダウンロードが必要な時だけ。
-APIキーの取得方法は [公式ドキュメント](https://www.kaggle.com/docs/api#authentication) を参照すること
+    本ステップが必要なのは学習用データ `2019-Oct.csv` のダウンロードが必要な時だけ
 
-    $ export KAGGLE_USERNAME=xxxxxxxx
-    $ export KAGGLE_KEY=xxxxxxxx
+        # pip3 install -U kagglehub
 
-dockerコンテナ内でjupyter notebookを起動する
+4. dockerコンテナ内に Kaggle のAPIキーを設定する
 
-    $ cd / ; jupyter-lab --allow-root --ip='0.0.0.0' --NotebookApp.token=''
+    本ステップが必要なのは学習用データ `2019-Oct.csv` のダウンロードが必要な時だけ。
+    APIキーの取得方法は [公式ドキュメント](https://www.kaggle.com/docs/api#authentication) を参照すること
 
-<http://127.0.0.1:8888/lab/tree/workspace/data> をブラウザで開き `trial.ipynb` を開く
+        # export KAGGLE_USERNAME=xxxxxxxx
+        # export KAGGLE_KEY=xxxxxxxx
+
+5. dockerコンテナ内でjupyter notebookを起動する
+
+        # cd / ; jupyter-lab --allow-root --ip='0.0.0.0' --NotebookApp.token=''
+
+6. <http://127.0.0.1:8888/lab/tree/workspace/data> をブラウザで開き `trial.ipynb` を開く
 
 
 ## データ構造
@@ -163,7 +169,7 @@ t4recで扱うデータ構造(スキーマ)は複数存在する。
 
 あるデータ構造は、その1つ前段階のデータ構造からの変換で作られている。
 
-以下ではそれぞれのスキーマ(≒カラム情報)を列挙する。
+以下ではそれぞれのスキーマを説明する。
 
 ### 生CSV
 
@@ -183,6 +189,8 @@ t4recで扱うデータ構造(スキーマ)は複数存在する。
 
 ### CSV を Parquet に変換したもの
 
+基本的にCSVをParquetとして扱いやすくしたもの。
+
 ファイル名: `notebook/Oct-2019.parquet`
 
 カラム名                   | 説明
@@ -201,6 +209,8 @@ t4recで扱うデータ構造(スキーマ)は複数存在する。
 サンプルコードではこの時点でデータを最初の7日間に絞り込んでいる。
 
 ### ETLによりセッション毎にまとめた Parquet
+
+機械学習モデルに入力できる形に近づけたもの。
 
 ファイル名: `notebook/processed_nvt/part_0.parquet`
 
@@ -253,16 +263,19 @@ t4recで扱うデータ構造(スキーマ)は複数存在する。
 あるセッションがこれまでに参照した製品のリストとそレに対応する(t4recのコンテキストにおける)各種カテゴリのリストから、
 続けて推薦すべき製品リストを提案するという建て付けになっている。
 
-タグの意味付けはおおむね以下のような印象
+タグの意味付けはおおむね以下のような印象:
 
 * ITEM, ID - 推薦対象となるアイテムとその識別情報
 * CATEGORICAL - 推薦のヒントとなるアイテムのカテゴリ情報
 * CONTINUOUS - 推薦のヒントとなるアイテムの近接情報
 * LIST - リストであることを付記する装飾タグ
 
-詳細なデータは[ノートブック][notebook]の末尾に添付してある
+詳細なデータは[ノートブック][notebook]の末尾に添付してある。
 
 ### t4rec モデルの出力
+
+推薦アイテムのリストとそのlogitのリスト。
+各リストは100個となっている。
 
 カラム名         | 説明
 -----------------|----------------------------------------------
@@ -277,6 +290,6 @@ t4recで扱うデータ構造(スキーマ)は複数存在する。
 
     (WorkflowによるIDの発番が必要なため)
 
-*   一連の流れを俯瞰で確認できる1枚の [Jupyter notebook](./notebook/trial.ipynb) を作った
+*   一連の流れを俯瞰で確認できる1枚の [Jupyter notebook][notebook] を作った
 
 [notebook]:./notebook/trial.ipynb
