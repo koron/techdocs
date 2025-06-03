@@ -6,7 +6,7 @@ ID    | ユースケース    | コマンド
 :----:|-----------------|-----------------------------------------------
 UC01  |インストール     | `pacman -S {pkgname}`
 UC02  |アンインストール | `pacman -R {pkgname}`
-UC03  |クリーンナップ   | `pacman -Qtdq | pacman -Rs -` <br> `pacman -Sc`
+UC03  |クリーンナップ   | `pacman -Qtdq \| pacman -Rs -` <br> `pacman -Sc`
 UC04  |パッケージ更新   | `pacman -Su` <br> `pacman -Syu`
 UC05  |レポジトリの同期 | `pacman -Sy`
 UC06  |未・一覧         | `pacman -Ss {regex}`
