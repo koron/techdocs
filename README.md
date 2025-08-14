@@ -13,7 +13,7 @@ Title                                                                 |Date     
 [NVIDIA-Merlin](./NVIDIA-Merlin)                                      |2024-10-25 |Done
 [vector-transforms-encodings](./vector-transforms-encodings)          |2023-11-15 |Done
 [product-quantization-errors](./product-quantization-errors)          |2023-11-29 |Done
-[llama-overview](./llama-overview)                                    |2023-12-12 |WIP
+[llama-overview](./llama-overview)                                    |2023-12-12 |Done
 [asciidoctor-pdf-memo](./asciidoctor-pdf-memo)                        |2024-01-08 |Done
 [freebsd14-mtu-dma](./freebsd14-mtu-dma)                              |2024-01-12 |Done
 [systemd-resolved-with-dnsmasq](./systemd-resolved-with-dnsmasq)      |2024-02-12 |Done
@@ -30,18 +30,17 @@ Title                                                                 |Date     
 [SIMD in Java](./simd-in-java)                                        |2024-05-01 |Done
 [Finetune PaliGemma](./finetune-paligemma)                            |2024-06-05 |Done
 [CyberAgnetのLVM: llava-calm2-siglip](./llava-calm2-siglip)           |2024-06-20 |Done
-[Finetune HF チュートリアル](./finetune-hf-tutorial)                  |2024-07-17 |WIP
-[Fedora再導入記](./fedora-reintroduction)                             |2024-07-19 |WIP
+[Finetune HF チュートリアル](./finetune-hf-tutorial)                  |2024-07-17 |Done
+[Fedora再導入記](./fedora-reintroduction)                             |2024-07-19 |Done
 [RP2350の調査](./rp2350-investigation)                                |2024-08-09 |Done
 [パッケージマネージャへの要件](./package-manager-requirements)        |2024-08-19 |Done
 [RP2350用C言語プログラムをビルド](./rp2350-build-cprogram)            |2024-08-31 |Done
 [実践的なファインチューニング](https://github.com/koron/practical-finetuning)|2024-10-30 |Moved
 [kenrel32.dllを使わないプログラム](./win32-without-kernel32)          |2025-01-12 |Done
-[RP2350A手はんだキットへの挑戦記](./rp2350-hand-solderling-challenge) |2025-01-17 |WIP
+[RP2350A手はんだキットへの挑戦記](./rp2350-hand-solderling-challenge) |2025-01-17 |Done
 [MHP50マニュアル日本語訳](./mhp50-manual-ja)                          |2025-01-19 |WIP
-[Merlin Transformer4Rec](./NVIDIA-Merlin/Transformers4Rec)            |2025-03-12 |WIP
+[Merlin Transformer4Rec](./NVIDIA-Merlin/Transformers4Rec)            |2025-03-12 |Done
 [go.mod の toolchain とは?](./go-mod-toolchain)                       |2025-05-04 |Done
-
 
 ## Future topics
 
