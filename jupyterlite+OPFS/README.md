@@ -22,7 +22,7 @@ Jekyllみたいなもので、一度ビルドしてしまえばHTTPファイル�
 JupyterLiteがどういうモノかは、言葉であれこれ説明するよりも [デモサイト](<https://jupyterlite.readthedocs.io/en/latest/_static/lab/index.html>) を実際に触ってもらった方が良いだろう。
 
 さて逆にJupyterLiteの弱点は、デフォルトのファイルシステムに制限があり、通常は最大5MB程度しか保存できないことがあげられる。
-これはJupyterLiteのが[ローカルストレージ](https://developer.mozilla.org/ja/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#%E3%82%A6%E3%82%A7%E3%83%96%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8)により実装されていることに拠る。
+これはJupyterLiteが[ローカルストレージ](https://developer.mozilla.org/ja/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria#%E3%82%A6%E3%82%A7%E3%83%96%E3%82%B9%E3%83%88%E3%83%AC%E3%83%BC%E3%82%B8)により実装されていることに拠る。
 [jupyterlab-filesystem-access](https://github.com/jupyterlab-contrib/jupyterlab-filesystem-access/)という拡張をインストールすればローカルなファイルシステムにアクセスできるようになるが、
 起動というかページロードのたびにアクセスを許可するフォルダを選ぶところから始めることになるので、若干煩わしい。
 
