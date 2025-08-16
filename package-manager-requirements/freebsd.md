@@ -14,7 +14,7 @@ UC07  |未・詳細説明     | `pkg search {pkgname}` <br> `pkg rquery '%o' {pk
 UC08  |未・依存一覧     | `awk -F\\| ' $1~/^{name}-/ { print $9 }' INDEX-14` <br> `pkg rquery %do {pkgname}`
 UC09a |済・一覧         | `portmaster -l` 
 UC09b |済・名前フィルタ | `pkg info`
-UC09c |済・手動属性     | `pkg query -e '%a = 0' '%n-%v`
+UC09c |済・手動属性     | `pkg query -e '%a = 0' '%n-%v'`
 UC09d |済・自動属性     | `pkg query -e '%a = 1' '%n-%v'`
 UC10  |済・詳細説明     | `pkg info {pkgname}`
 UC11  |済・構成一覧     | `pkg info -l {pkgname}`
