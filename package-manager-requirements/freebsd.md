@@ -41,7 +41,7 @@ UC06  |未・一覧         | `pkg search '.*'` (インストール済も含む)
 UC07  |未・詳細説明     | `pkg search -f {pkgname}`
 UC08  |未・依存一覧     | `pkg rquery %do {pkgname}`
 UC09a |済・一覧         | `pkg info`
-UC09b |済・名前フィルタ | `pkg info | grep {pattern}`
+UC09b |済・名前フィルタ | `pkg info \| grep {pattern}`
 UC09c |済・手動属性     | `pkg query -e '%a = 0' '%n-%v'`
 UC09d |済・自動属性     | `pkg query -e '%a = 1' '%n-%v'`
 UC10  |済・詳細説明     | `pkg info {pkgname}`
